@@ -419,9 +419,10 @@
   <main class="gallery-grid" id="galleryGrid"></main>
 
 <script>
-  const SCRIPT_API_URL = "วางลิงก์_WEB_APP_URL_ของคุณตรงนี้";
+  // ✅ ฝัง URL และ ID ให้เรียบร้อยแล้ว ไม่ต้องแก้เพิ่ม!
+  const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
 
-  let currentLang = 'en'; // ตั้งค่า Default เป็นภาษาอังกฤษ
+  let currentLang = 'en'; 
   let globalArtworks = [];
 
   const translations = {
@@ -479,19 +480,24 @@
   }
 
   function loadGallery() {
-    if (!SCRIPT_API_URL || SCRIPT_API_URL.includes("https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec")) return;
+    const statusEl = document.getElementById('statusText');
+    statusEl.innerText = translations[currentLang].loading;
     const script = document.createElement('script');
     script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
     document.body.appendChild(script);
   }
 
   window.onPortfolioLoaded = function(response) {
+    const statusEl = document.getElementById('statusText');
     if (response.avatarUrl) {
       document.getElementById('profileAvatar').src = response.avatarUrl;
     }
     if (response.artworks && response.artworks.length > 0) {
       globalArtworks = response.artworks;
       renderCards(globalArtworks);
+      statusEl.innerText = translations[currentLang].hint;
+    } else {
+      statusEl.innerText = translations[currentLang].empty;
     }
   };
 
