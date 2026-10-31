@@ -371,4 +371,183 @@
         <a class="btn-social" href="https://www.instagram.com/dasshu2025/" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a class="btn-social" href="https://www.tiktok.com/@dasshu9" target="_blank" rel="noopener noreferrer">TikTok</a>
         <a class="btn-social" href="https://www.pixiv.net/en/users/126719691" target="_blank" rel="noopener noreferrer">Pixiv</a>
-        <a class="btn-social" href="
+        <a class="btn-social" href="https://youtube.com/@dasshu3647?si=3BB3op5EhpLm62m0" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <button class="filter-btn active" onclick="filterGallery('all', this)" id="btnAll">All Works</button>
+      <button class="filter-btn" onclick="filterGallery('illust', this)" id="btnIllust">Illustration</button>
+      <button class="filter-btn" onclick="filterGallery('adopt', this)" id="btnAdopt">Adoptable</button>
+    </div>
+    <span class="hint-text" id="statusText">☕ Click on artwork to zoom in</span>
+  </div>
+
+  <section id="inspector" class="inspector">
+    <div class="inspector-header">
+      <span id="inspTag" class="badge">Category</span>
+      <button class="btn-social" onclick="closeInspector()" id="btnClose">✕ Close</button>
+    </div>
+    <div class="inspector-body">
+      <div>
+        <div id="viewerStage" class="viewer-stage">
+          <img id="inspImg" class="viewer-img" src="" alt="Full Artwork">
+        </div>
+        <div class="viewer-controls">
+          <button class="btn-social" onclick="toggleCanvasTheme()" id="btnTheme">🌙 Toggle Canvas Background (Dark/Light)</button>
+        </div>
+      </div>
+
+      <div class="inspector-info">
+        <h3 id="inspTitle">Artwork Title</h3>
+        <p id="inspDesc" class="inspector-desc"></p>
+        <div class="vgen-box">
+          <strong style="display:block; margin-bottom:6px; font-size:0.9rem;" id="boxHead">Like this art style?</strong>
+          <p style="font-size:0.82rem; color:var(--text-sub); margin-bottom:14px;" id="boxDesc">
+            Check pricing, queue slots, and commission securely via DASShu's VGen.
+          </p>
+          <a class="btn-vgen" style="width:100%; justify-content:center;" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer" id="boxBtn">
+            ✨ View Pricing &amp; Order on VGen ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="gallery-grid" id="galleryGrid"></main>
+
+<script>
+  const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
+
+  let currentLang = 'en'; 
+  let globalArtworks = [];
+
+  const translations = {
+    en: {
+      subRole: "Character Illustrator • Adoptable &amp; OC Designer",
+      vgenBtn: "✨ Commission on VGen ↗",
+      allWorks: "All Works",
+      illust: "Illustration",
+      adopt: "Adoptable",
+      hint: "☕ Click on artwork to zoom in",
+      close: "✕ Close",
+      theme: "🌙 Toggle Canvas Background (Dark/Light)",
+      boxHead: "Like this art style?",
+      boxDesc: "Check pricing, queue slots, and commission securely via DASShu's VGen.",
+      boxBtn: "✨ View Pricing &amp; Order on VGen ↗",
+      loading: "⏳ Loading gallery...",
+      empty: "☕ Click on artwork to zoom in (No artworks found)"
+    },
+    th: {
+      subRole: "นักวาดภาพคาแรกเตอร์ • นักออกแบบตัวละครและ Adoptable",
+      vgenBtn: "✨ สั่งงานคอมมิชชันบน VGen ↗",
+      allWorks: "ผลงานทั้งหมด",
+      illust: "ภาพประกอบ (Illustration)",
+      adopt: "ตัวละครพร้อมขาย (Adoptable)",
+      hint: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย",
+      close: "✕ ปิดหน้าต่างขยาย",
+      theme: "🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)",
+      boxHead: "ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?",
+      boxDesc: "ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง",
+      boxBtn: "✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗",
+      loading: "⏳ กำลังโหลดแกลเลอรี...",
+      empty: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย (ยังไม่มีรูปในระบบ)"
+    }
+  };
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'th' : 'en';
+    updateTexts();
+  }
+
+  function updateTexts() {
+    const t = translations[currentLang];
+    document.getElementById('langLabel').innerText = currentLang.toUpperCase();
+    document.getElementById('txtSubRole').innerHTML = t.subRole;
+    document.getElementById('vgenBtn').innerHTML = t.vgenBtn;
+    document.getElementById('btnAll').innerText = t.allWorks;
+    document.getElementById('btnIllust').innerText = t.illust;
+    document.getElementById('btnAdopt').innerText = t.adopt;
+    document.getElementById('statusText').innerText = t.hint;
+    document.getElementById('btnClose').innerText = t.close;
+    document.getElementById('btnTheme').innerText = t.theme;
+    document.getElementById('boxHead').innerText = t.boxHead;
+    document.getElementById('boxDesc').innerText = t.boxDesc;
+    document.getElementById('boxBtn').innerHTML = t.boxBtn;
+  }
+
+  function loadGallery() {
+    const statusEl = document.getElementById('statusText');
+    statusEl.innerText = translations[currentLang].loading;
+    const script = document.createElement('script');
+    script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
+    document.body.appendChild(script);
+  }
+
+  window.onPortfolioLoaded = function(response) {
+    const statusEl = document.getElementById('statusText');
+    if (response.avatarUrl) {
+      document.getElementById('profileAvatar').src = response.avatarUrl;
+    }
+    if (response.artworks && response.artworks.length > 0) {
+      globalArtworks = response.artworks;
+      renderCards(globalArtworks);
+      statusEl.innerText = translations[currentLang].hint;
+    } else {
+      statusEl.innerText = translations[currentLang].empty;
+    }
+  };
+
+  function renderCards(items) {
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'art-card';
+      card.dataset.cat = item.category;
+      card.onclick = () => openInspector(item.title, item.categoryLabel, item.desc, item.finalUrl);
+      card.innerHTML = `
+        <img class="art-thumb" src="${item.finalUrl}" alt="${item.title}" loading="lazy">
+        <div class="art-footer">
+          <h4>${item.title}</h4>
+          <span class="badge">${item.categoryLabel}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filterGallery(cat, btn) {
+    closeInspector();
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.art-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    });
+  }
+
+  function openInspector(title, tag, desc, finalUrl) {
+    document.getElementById('inspTitle').innerText = title;
+    document.getElementById('inspTag').innerText = tag;
+    document.getElementById('inspDesc').innerText = desc;
+    document.getElementById('inspImg').src = finalUrl;
+    const insp = document.getElementById('inspector');
+    insp.classList.add('open');
+    insp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function toggleCanvasTheme() {
+    document.getElementById('viewerStage').classList.toggle('dark-mode');
+  }
+
+  function closeInspector() {
+    document.getElementById('inspector').classList.remove('open');
+  }
+
+  updateTexts();
+  loadGallery();
+</script>
+</body>
+</html>
