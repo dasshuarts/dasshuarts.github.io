@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DASShu Portfolio Showroom</title>
+<style>
+  :root {
+    --bg-milk: #FAF8F5;
+    --bg-card: #FFFFFF;
+    --bg-oat: #F2ECE4;
+    --wood-main: #9C7E63;
+    --wood-hover: #7D6249;
+    --wood-soft: #EFE9E1;
+    --vgen-lime: #B4F000;
+    --vgen-hover: #9FE000;
+    --vgen-text: #142400;
+    --sage-green: #5B8C6E;
+    --sage-bg: #EBF3ED;
+    --text-main: #2C2825;
+    --text-sub: #857D75;
+    --border-soft: #E8E1D9;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg-milk);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
+    line-height: 1.65;
+    padding: 20px 2%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .profile-header {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 4px 20px rgba(156, 126, 99, 0.05);
+  }
+
+  .profile-left {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+
+  .avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--bg-oat);
+    padding: 2px;
+    background: var(--bg-card);
+  }
+
+  .identity h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text-main);
+  }
+
+  .identity p {
+    color: var(--text-sub);
+    font-size: 0.92rem;
+    margin-top: 3px;
+  }
+
+  .badge-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: var(--bg-oat);
+    color: #695E53;
+    border: 1px solid var(--border-soft);
+  }
+
+  .badge-human {
+    background: var(--sage-bg);
+    color: var(--sage-green);
+    border-color: #D2E5D8;
+  }
+
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .btn-vgen {
+    background: var(--vgen-lime);
+    color: var(--vgen-text);
+    font-weight: 800;
+    font-size: 0.92rem;
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1px solid #96CC00;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(180, 240, 0, 0.35);
+  }
+
+  .btn-vgen:hover {
+    background: var(--vgen-hover);
+    transform: translateY(-2px);
+  }
+
+  .social-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+    max-width: 440px;
+  }
+
+  .btn-social {
+    background: var(--bg-milk);
+    color: var(--text-main);
+    border: 1px solid var(--border-soft);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn-social:hover {
+    background: var(--bg-oat);
+    border-color: var(--wood-main);
+  }
+
+  .filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 28px 0 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: transparent;
+    color: var(--text-sub);
+    border: 1px solid transparent;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .filter-btn:hover {
+    color: var(--text-main);
+    background: var(--wood-soft);
+  }
+
+  .filter-btn.active {
+    background: var(--text-main);
+    color: #FFFFFF;
+  }
+
+  .hint-text {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+  }
+
+  .inspector {
+    display: none;
+    background: var(--bg-card);
+    border: 1px solid var(--wood-main);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(44, 40, 37, 0.06);
+  }
+
+  .inspector.open { display: block; }
+
+  .inspector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .inspector-body {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .viewer-stage {
+    background: var(--bg-milk);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    transition: background 0.25s ease;
+  }
+
+  .viewer-stage.dark-mode {
+    background: #18181B;
+    border-color: #2E2E36;
+  }
+
+  .viewer-img {
+    width: 100%;
+    border-radius: 6px;
+    display: block;
+  }
+
+  .viewer-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  .inspector-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .inspector-desc {
+    color: var(--text-sub);
+    font-size: 0.9rem;
+    margin: 12px 0 22px;
+  }
+
+  .vgen-box {
+    background: var(--bg-milk);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 18px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .art-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    box-shadow: 0 2px 10px rgba(44, 40, 37, 0.03);
+  }
+
+  .art-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--wood-main);
+    box-shadow: 0 12px 24px rgba(156, 126, 99, 0.12);
+  }
+
+  .art-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 4;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+    background: var(--bg-oat);
+  }
+
+  .art-footer {
+    padding: 12px 6px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .art-footer h4 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  @media (max-width: 800px) {
+    .inspector-body { grid-template-columns: 1fr; }
+    .cta-group { align-items: flex-start; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .social-grid { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="profile-header">
+    <div class="profile-left">
+      <img class="avatar" src="https://picsum.photos/id/64/300/300" alt="DASShu Avatar">
+      <div class="identity">
+        <h1>DASShu</h1>
+        <p>Character Illustrator • Adoptable &amp; OC Designer</p>
+        <div class="badge-strip">
+          <span class="badge badge-human">✓ 100% Human</span>
+          <span class="badge">🎨 Clip Studio Paint</span>
+          <span class="badge">🌐 TH / EN OK</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-group">
+      <a class="btn-vgen" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer">
+        ✨ Commission on VGen ↗
+      </a>
+      <div class="social-grid">
+        <a class="btn-social" href="https://x.com/DASShu_ART" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+        <a class="btn-social" href="https://bsky.app/profile/dasshuart.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+        <a class="btn-social" href="https://www.instagram.com/dasshu2025/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a class="btn-social" href="https://www.tiktok.com/@dasshu9" target="_blank" rel="noopener noreferrer">TikTok</a>
+        <a class="btn-social" href="https://www.pixiv.net/en/users/126719691" target="_blank" rel="noopener noreferrer">Pixiv</a>
+        <a class="btn-social" href="https://youtube.com/@dasshu3647?si=3BB3op5EhpLm62m0" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <button class="filter-btn active" onclick="filterGallery('all', this)">All Works</button>
+      <button class="filter-btn" onclick="filterGallery('illust', this)">Illustration</button>
+      <button class="filter-btn" onclick="filterGallery('adopt', this)">Adoptable</button>
+    </div>
+    <span class="hint-text" id="statusText">☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย</span>
+  </div>
+
+  <section id="inspector" class="inspector">
+    <div class="inspector-header">
+      <span id="inspTag" class="badge">Category</span>
+      <button class="btn-social" onclick="closeInspector()">✕ ปิดหน้าต่างขยาย</button>
+    </div>
+    <div class="inspector-body">
+      <div>
+        <div id="viewerStage" class="viewer-stage">
+          <img id="inspImg" class="viewer-img" src="" alt="Full Artwork">
+        </div>
+        <div class="viewer-controls">
+          <button class="btn-social" onclick="toggleCanvasTheme()">🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)</button>
+        </div>
+      </div>
+
+      <div class="inspector-info">
+        <h3 id="inspTitle">Artwork Title</h3>
+        <p id="inspDesc" class="inspector-desc"></p>
+        <div class="vgen-box">
+          <strong style="display:block; margin-bottom:6px; font-size:0.9rem;">ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?</strong>
+          <p style="font-size:0.82rem; color:var(--text-sub); margin-bottom:14px;">
+            ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง
+          </p>
+          <a class="btn-vgen" style="width:100%; justify-content:center;" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer">
+            ✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="gallery-grid" id="galleryGrid"></main>
+
+<script>
+  // 📌 เอา Web App URL ที่ลงท้ายด้วย /exec มาใส่ตรงนี้!
+  const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
+
+  const fallbackArtworks = [
+    {
+      title: "Character Illustration Sample",
+      category: "illust",
+      categoryLabel: "Illustration",
+      desc: "งานวาดคาแรกเตอร์ด้วย Clip Studio Paint 100% สไตล์มู้ดอบอุ่น",
+      finalUrl: "https://picsum.photos/id/1025/800/800"
+    },
+    {
+      title: "Adoptable Design #01",
+      category: "adopt",
+      categoryLabel: "Adoptable",
+      desc: "งานออกแบบตัวละครออริจินัลพร้อมขาย (Adoptable) ไฟล์ความละเอียดสูง",
+      finalUrl: "https://picsum.photos/id/1062/800/800"
+    }
+  ];
+
+  // ฟังก์ชันรับข้อมูลจาก Apps Script แบบ JSONP (ไม่ติดบล็อก Safari)
+  window.onPortfolioLoaded = function(data) {
+    if (Array.isArray(data) && data.length > 0) {
+      renderCards(data);
+      document.getElementById('statusText').innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย";
+    } else {
+      renderCards(fallbackArtworks);
+      document.getElementById('statusText').innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย (ยังไม่มีรูปในชีต)";
+    }
+  };
+
+  function loadGallery() {
+    if (!SCRIPT_API_URL || SCRIPT_API_URL.includes("PUT_YOUR")) {
+      renderCards(fallbackArtworks);
+      return;
+    }
+    document.getElementById('statusText').innerText = "⏳ กำลังโหลดแกลเลอรี...";
+    const script = document.createElement('script');
+    script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
+    script.onerror = function() {
+      renderCards(fallbackArtworks);
+      document.getElementById('statusText').innerText = "⚠️ ตรวจสอบลิงก์ SCRIPT_API_URL หรือสิทธิ์การ Deploy";
+    };
+    document.body.appendChild(script);
+  }
+
+  function renderCards(items) {
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'art-card';
+      card.dataset.cat = item.category;
+      card.onclick = () => openInspector(item.title, item.categoryLabel, item.desc, item.finalUrl, item.fallbackUrl);
+      card.innerHTML = `
+        <img class="art-thumb" src="${item.finalUrl}" onerror="if(this.src!=='${item.fallbackUrl || item.finalUrl}') this.src='${item.fallbackUrl || item.finalUrl}';" alt="${item.title}" loading="lazy">
+        <div class="art-footer">
+          <h4>${item.title}</h4>
+          <span class="badge">${item.categoryLabel}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filterGallery(cat, btn) {
+    closeInspector();
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.art-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    });
+  }
+
+  function openInspector(title, tag, desc, finalUrl, fallbackUrl) {
+    document.getElementById('inspTitle').innerText = title;
+    document.getElementById('inspTag').innerText = tag;
+    document.getElementById('inspDesc').innerText = desc;
+    const img = document.getElementById('inspImg');
+    img.onerror = function() {
+      if (fallbackUrl && img.src !== fallbackUrl) img.src = fallbackUrl;
+    };
+    img.src = finalUrl;
+    const insp = document.getElementById('inspector');
+    insp.classList.add('open');
+    insp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function toggleCanvasTheme() {
+    document.getElementById('viewerStage').classList.toggle('dark-mode');
+  }
+
+  function closeInspector() {
+    document.getElementById('inspector').classList.remove('open');
+  }
+
+  loadGallery();
+</script>
+</body>
+</html>
