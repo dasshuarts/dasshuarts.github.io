@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,8 +31,8 @@
     color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
     line-height: 1.65;
-    padding: 40px 5%;
-    max-width: 1400px;
+    padding: 20px 2%;
+    max-width: 100%;
     margin: 0 auto;
   }
 
@@ -108,6 +108,25 @@
     align-items: flex-end;
     gap: 12px;
   }
+
+  .top-row-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lang-toggle {
+    background: var(--bg-oat);
+    border: 1px solid var(--border-soft);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: 0.2s;
+  }
+  .lang-toggle:hover { background: var(--wood-soft); }
 
   .btn-vgen {
     background: var(--vgen-lime);
@@ -327,10 +346,10 @@
 
   <header class="profile-header">
     <div class="profile-left">
-      <img class="avatar" src="https://picsum.photos/id/64/300/300" alt="DASShu Avatar">
+      <img id="profileAvatar" class="avatar" src="https://picsum.photos/id/64/300/300" alt="DASShu Avatar">
       <div class="identity">
         <h1>DASShu</h1>
-        <p>Character Illustrator • Adoptable &amp; OC Designer</p>
+        <p id="txtSubRole">Character Illustrator • Adoptable &amp; OC Designer</p>
         <div class="badge-strip">
           <span class="badge badge-human">✓ 100% Human</span>
           <span class="badge">🎨 Clip Studio Paint</span>
@@ -340,9 +359,12 @@
     </div>
 
     <div class="cta-group">
-      <a class="btn-vgen" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer">
-        ✨ Commission on VGen ↗
-      </a>
+      <div class="top-row-controls">
+        <button class="lang-toggle" onclick="toggleLanguage()">🌐 <span id="langLabel">TH / EN</span></button>
+        <a class="btn-vgen" id="vgenBtn" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer">
+          ✨ Commission on VGen ↗
+        </a>
+      </div>
       <div class="social-grid">
         <a class="btn-social" href="https://x.com/DASShu_ART" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
         <a class="btn-social" href="https://bsky.app/profile/dasshuart.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
@@ -356,17 +378,17 @@
 
   <div class="filter-bar">
     <div class="filter-group">
-      <button class="filter-btn active" onclick="filterGallery('all', this)">All Works</button>
-      <button class="filter-btn" onclick="filterGallery('illust', this)">Illustration</button>
-      <button class="filter-btn" onclick="filterGallery('adopt', this)">Adoptable</button>
+      <button class="filter-btn active" onclick="filterGallery('all', this)" id="btnAll">All Works</button>
+      <button class="filter-btn" onclick="filterGallery('illust', this)" id="btnIllust">Illustration</button>
+      <button class="filter-btn" onclick="filterGallery('adopt', this)" id="btnAdopt">Adoptable</button>
     </div>
-    <span class="hint-text" id="statusText">☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย</span>
+    <span class="hint-text" id="statusText">☕ Click on artwork to zoom in</span>
   </div>
 
   <section id="inspector" class="inspector">
     <div class="inspector-header">
       <span id="inspTag" class="badge">Category</span>
-      <button class="btn-social" onclick="closeInspector()">✕ ปิดหน้าต่างขยาย</button>
+      <button class="btn-social" onclick="closeInspector()" id="btnClose">✕ Close</button>
     </div>
     <div class="inspector-body">
       <div>
@@ -374,7 +396,7 @@
           <img id="inspImg" class="viewer-img" src="" alt="Full Artwork">
         </div>
         <div class="viewer-controls">
-          <button class="btn-social" onclick="toggleCanvasTheme()">🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)</button>
+          <button class="btn-social" onclick="toggleCanvasTheme()" id="btnTheme">🌙 Toggle Canvas Background (Dark/Light)</button>
         </div>
       </div>
 
@@ -382,12 +404,12 @@
         <h3 id="inspTitle">Artwork Title</h3>
         <p id="inspDesc" class="inspector-desc"></p>
         <div class="vgen-box">
-          <strong style="display:block; margin-bottom:6px; font-size:0.9rem;">ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?</strong>
-          <p style="font-size:0.82rem; color:var(--text-sub); margin-bottom:14px;">
-            ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง
+          <strong style="display:block; margin-bottom:6px; font-size:0.9rem;" id="boxHead">Like this art style?</strong>
+          <p style="font-size:0.82rem; color:var(--text-sub); margin-bottom:14px;" id="boxDesc">
+            Check pricing, queue slots, and commission securely via DASShu's VGen.
           </p>
-          <a class="btn-vgen" style="width:100%; justify-content:center;" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer">
-            ✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗
+          <a class="btn-vgen" style="width:100%; justify-content:center;" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer" id="boxBtn">
+            ✨ View Pricing &amp; Order on VGen ↗
           </a>
         </div>
       </div>
@@ -397,80 +419,81 @@
   <main class="gallery-grid" id="galleryGrid"></main>
 
 <script>
-    // 📌 วางลิงก์ Web App URL ที่ลงท้ายด้วย /exec ในเครื่องหมายคำพูดด้านล่างนี้
-  const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
+  const SCRIPT_API_URL = "วางลิงก์_WEB_APP_URL_ของคุณตรงนี้";
 
-  async function loadGallery() {
-    const statusEl = document.getElementById('statusText');
-    const grid = document.getElementById('galleryGrid');
+  let currentLang = 'en'; // ตั้งค่า Default เป็นภาษาอังกฤษ
+  let globalArtworks = [];
 
-    if (!SCRIPT_API_URL || SCRIPT_API_URL.includes("PUT_YOUR") || SCRIPT_API_URL.includes("วางลิงก์")) {
-      statusEl.innerText = "⚠️ ยังไม่ได้ใส่ลิงก์ SCRIPT_API_URL ในไฟล์ index.html";
-      return;
+  const translations = {
+    en: {
+      subRole: "Character Illustrator • Adoptable &amp; OC Designer",
+      vgenBtn: "✨ Commission on VGen ↗",
+      allWorks: "All Works",
+      illust: "Illustration",
+      adopt: "Adoptable",
+      hint: "☕ Click on artwork to zoom in",
+      close: "✕ Close",
+      theme: "🌙 Toggle Canvas Background (Dark/Light)",
+      boxHead: "Like this art style?",
+      boxDesc: "Check pricing, queue slots, and commission securely via DASShu's VGen.",
+      boxBtn: "✨ View Pricing &amp; Order on VGen ↗",
+      loading: "⏳ Loading gallery...",
+      empty: "☕ Click on artwork to zoom in (No artworks found)"
+    },
+    th: {
+      subRole: "นักวาดภาพคาแรกเตอร์ • นักออกแบบตัวละครและ Adoptable",
+      vgenBtn: "✨ สั่งงานคอมมิชชันบน VGen ↗",
+      allWorks: "ผลงานทั้งหมด",
+      illust: "ภาพประกอบ (Illustration)",
+      adopt: "ตัวละครพร้อมขาย (Adoptable)",
+      hint: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย",
+      close: "✕ ปิดหน้าต่างขยาย",
+      theme: "🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)",
+      boxHead: "ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?",
+      boxDesc: "ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง",
+      boxBtn: "✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗",
+      loading: "⏳ กำลังโหลดแกลเลอรี...",
+      empty: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย (ยังไม่มีรูปในระบบ)"
     }
+  };
 
-    statusEl.innerText = "⏳ กำลังโหลดแกลเลอรี...";
-
-    try {
-      // ดึงข้อมูลจาก Apps Script โดยตรง
-      const res = await fetch(SCRIPT_API_URL + "?action=getArtworks&t=" + Date.now(), {
-        method: "GET",
-        redirect: "follow"
-      });
-      const data = await res.json();
-
-      if (Array.isArray(data) && data.length > 0) {
-        renderCards(data);
-        statusEl.innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย";
-      } else {
-        grid.innerHTML = '<p style="color:#857D75; grid-column: 1/-1; text-align:center; padding: 40px;">ยังไม่มีผลงานในตาราง Google Sheets ลองอัปโหลดรูปจากหน้า Admin ได้เลย!</p>';
-        statusEl.innerText = "☕ พร้อมใช้งาน";
-      }
-    } catch (err) {
-      // สำรองด้วยวิธี JSONP หากติด CORS
-      const script = document.createElement('script');
-      script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
-      script.onerror = function() {
-        statusEl.innerText = "⚠️ เชื่อมต่อไม่ได้: กรุณาตั้งค่า Deploy ใน Apps Script ให้เป็น Anyone (ทุกคน)";
-      };
-      document.body.appendChild(script);
-    }
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'th' : 'en';
+    updateTexts();
   }
 
-  window.onPortfolioLoaded = function(data) {
-    const statusEl = document.getElementById('statusText');
-    if (Array.isArray(data) && data.length > 0) {
-      renderCards(data);
-      statusEl.innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย";
-    }
-  };
-
-
-  // ฟังก์ชันรับข้อมูลจาก Apps Script แบบ JSONP (ไม่ติดบล็อก Safari)
-  window.onPortfolioLoaded = function(data) {
-    if (Array.isArray(data) && data.length > 0) {
-      renderCards(data);
-      document.getElementById('statusText').innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย";
-    } else {
-      renderCards(fallbackArtworks);
-      document.getElementById('statusText').innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย (ยังไม่มีรูปในชีต)";
-    }
-  };
+  function updateTexts() {
+    const t = translations[currentLang];
+    document.getElementById('langLabel').innerText = currentLang.toUpperCase();
+    document.getElementById('txtSubRole').innerHTML = t.subRole;
+    document.getElementById('vgenBtn').innerHTML = t.vgenBtn;
+    document.getElementById('btnAll').innerText = t.allWorks;
+    document.getElementById('btnIllust').innerText = t.illust;
+    document.getElementById('btnAdopt').innerText = t.adopt;
+    document.getElementById('statusText').innerText = t.hint;
+    document.getElementById('btnClose').innerText = t.close;
+    document.getElementById('btnTheme').innerText = t.theme;
+    document.getElementById('boxHead').innerText = t.boxHead;
+    document.getElementById('boxDesc').innerText = t.boxDesc;
+    document.getElementById('boxBtn').innerHTML = t.boxBtn;
+  }
 
   function loadGallery() {
-    if (!SCRIPT_API_URL || SCRIPT_API_URL.includes("PUT_YOUR")) {
-      renderCards(fallbackArtworks);
-      return;
-    }
-    document.getElementById('statusText').innerText = "⏳ กำลังโหลดแกลเลอรี...";
+    if (!SCRIPT_API_URL || SCRIPT_API_URL.includes("https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec")) return;
     const script = document.createElement('script');
     script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
-    script.onerror = function() {
-      renderCards(fallbackArtworks);
-      document.getElementById('statusText').innerText = "⚠️ ตรวจสอบลิงก์ SCRIPT_API_URL หรือสิทธิ์การ Deploy";
-    };
     document.body.appendChild(script);
   }
+
+  window.onPortfolioLoaded = function(response) {
+    if (response.avatarUrl) {
+      document.getElementById('profileAvatar').src = response.avatarUrl;
+    }
+    if (response.artworks && response.artworks.length > 0) {
+      globalArtworks = response.artworks;
+      renderCards(globalArtworks);
+    }
+  };
 
   function renderCards(items) {
     const grid = document.getElementById('galleryGrid');
@@ -479,9 +502,9 @@
       const card = document.createElement('div');
       card.className = 'art-card';
       card.dataset.cat = item.category;
-      card.onclick = () => openInspector(item.title, item.categoryLabel, item.desc, item.finalUrl, item.fallbackUrl);
+      card.onclick = () => openInspector(item.title, item.categoryLabel, item.desc, item.finalUrl);
       card.innerHTML = `
-        <img class="art-thumb" src="${item.finalUrl}" onerror="if(this.src!=='${item.fallbackUrl || item.finalUrl}') this.src='${item.fallbackUrl || item.finalUrl}';" alt="${item.title}" loading="lazy">
+        <img class="art-thumb" src="${item.finalUrl}" alt="${item.title}" loading="lazy">
         <div class="art-footer">
           <h4>${item.title}</h4>
           <span class="badge">${item.categoryLabel}</span>
@@ -500,15 +523,11 @@
     });
   }
 
-  function openInspector(title, tag, desc, finalUrl, fallbackUrl) {
+  function openInspector(title, tag, desc, finalUrl) {
     document.getElementById('inspTitle').innerText = title;
     document.getElementById('inspTag').innerText = tag;
     document.getElementById('inspDesc').innerText = desc;
-    const img = document.getElementById('inspImg');
-    img.onerror = function() {
-      if (fallbackUrl && img.src !== fallbackUrl) img.src = fallbackUrl;
-    };
-    img.src = finalUrl;
+    document.getElementById('inspImg').src = finalUrl;
     const insp = document.getElementById('inspector');
     insp.classList.add('open');
     insp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -522,6 +541,7 @@
     document.getElementById('inspector').classList.remove('open');
   }
 
+  updateTexts();
   loadGallery();
 </script>
 </body>
