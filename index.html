@@ -397,25 +397,54 @@
   <main class="gallery-grid" id="galleryGrid"></main>
 
 <script>
-  // 📌 เอา Web App URL ที่ลงท้ายด้วย /exec มาใส่ตรงนี้!
+    // 📌 วางลิงก์ Web App URL ที่ลงท้ายด้วย /exec ในเครื่องหมายคำพูดด้านล่างนี้
   const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
 
-  const fallbackArtworks = [
-    {
-      title: "Character Illustration Sample",
-      category: "illust",
-      categoryLabel: "Illustration",
-      desc: "งานวาดคาแรกเตอร์ด้วย Clip Studio Paint 100% สไตล์มู้ดอบอุ่น",
-      finalUrl: "https://picsum.photos/id/1025/800/800"
-    },
-    {
-      title: "Adoptable Design #01",
-      category: "adopt",
-      categoryLabel: "Adoptable",
-      desc: "งานออกแบบตัวละครออริจินัลพร้อมขาย (Adoptable) ไฟล์ความละเอียดสูง",
-      finalUrl: "https://picsum.photos/id/1062/800/800"
+  async function loadGallery() {
+    const statusEl = document.getElementById('statusText');
+    const grid = document.getElementById('galleryGrid');
+
+    if (!SCRIPT_API_URL || SCRIPT_API_URL.includes("PUT_YOUR") || SCRIPT_API_URL.includes("วางลิงก์")) {
+      statusEl.innerText = "⚠️ ยังไม่ได้ใส่ลิงก์ SCRIPT_API_URL ในไฟล์ index.html";
+      return;
     }
-  ];
+
+    statusEl.innerText = "⏳ กำลังโหลดแกลเลอรี...";
+
+    try {
+      // ดึงข้อมูลจาก Apps Script โดยตรง
+      const res = await fetch(SCRIPT_API_URL + "?action=getArtworks&t=" + Date.now(), {
+        method: "GET",
+        redirect: "follow"
+      });
+      const data = await res.json();
+
+      if (Array.isArray(data) && data.length > 0) {
+        renderCards(data);
+        statusEl.innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย";
+      } else {
+        grid.innerHTML = '<p style="color:#857D75; grid-column: 1/-1; text-align:center; padding: 40px;">ยังไม่มีผลงานในตาราง Google Sheets ลองอัปโหลดรูปจากหน้า Admin ได้เลย!</p>';
+        statusEl.innerText = "☕ พร้อมใช้งาน";
+      }
+    } catch (err) {
+      // สำรองด้วยวิธี JSONP หากติด CORS
+      const script = document.createElement('script');
+      script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
+      script.onerror = function() {
+        statusEl.innerText = "⚠️ เชื่อมต่อไม่ได้: กรุณาตั้งค่า Deploy ใน Apps Script ให้เป็น Anyone (ทุกคน)";
+      };
+      document.body.appendChild(script);
+    }
+  }
+
+  window.onPortfolioLoaded = function(data) {
+    const statusEl = document.getElementById('statusText');
+    if (Array.isArray(data) && data.length > 0) {
+      renderCards(data);
+      statusEl.innerText = "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย";
+    }
+  };
+
 
   // ฟังก์ชันรับข้อมูลจาก Apps Script แบบ JSONP (ไม่ติดบล็อก Safari)
   window.onPortfolioLoaded = function(data) {
