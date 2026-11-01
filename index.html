@@ -18,50 +18,76 @@
   body {
     background: var(--bg-milk); color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
-    line-height: 1.65; padding: 20px 2%; max-width: 100%; margin: 0 auto;
+    line-height: 1.6; padding: 22px 2.5%; max-width: 1500px; margin: 0 auto;
   }
-  .profile-header {
+
+  /* โครงสร้าง 2 คอลัมน์ด้านบนตามภาพร่าง (ซ้าย Profile / ขวา Random Image) */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .profile-card {
     background: var(--bg-card); border: 1px solid var(--border-soft);
-    border-radius: 16px; padding: 26px 30px; display: flex; flex-wrap: wrap;
-    justify-content: space-between; align-items: center; gap: 20px;
+    border-radius: 18px; padding: 28px 26px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    justify-content: space-between; position: relative;
     box-shadow: 0 4px 20px rgba(156, 126, 99, 0.05);
   }
-  .profile-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-  .avatar {
-    width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
-    border: 4px solid var(--bg-oat); padding: 3px; background: var(--bg-card);
-    box-shadow: 0 4px 14px rgba(156, 126, 99, 0.12);
+
+  .lang-toggle {
+    position: absolute; top: 18px; right: 18px;
+    background: var(--bg-oat); border: 1px solid var(--border-soft); padding: 5px 12px;
+    border-radius: 999px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
   }
-  .identity h1 { font-size: 1.75rem; font-weight: 800; line-height: 1.2; }
+  .lang-toggle:hover { background: var(--wood-soft); }
+
+  .avatar {
+    width: 128px; height: 128px; border-radius: 50%; object-fit: cover;
+    border: 4px solid var(--bg-oat); padding: 3px; background: var(--bg-card);
+    box-shadow: 0 6px 18px rgba(156, 126, 99, 0.14); margin-bottom: 12px;
+  }
+
+  .identity h1 { font-size: 1.85rem; font-weight: 800; line-height: 1.2; }
   .identity p { color: var(--text-sub); font-size: 0.92rem; margin-top: 4px; }
-  .badge-strip, .contact-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+  .badge-strip, .contact-strip {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px;
+  }
   .badge {
-    font-size: 0.74rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+    font-size: 0.74rem; font-weight: 600; padding: 4px 11px; border-radius: 999px;
     background: var(--bg-oat); color: #695E53; border: 1px solid var(--border-soft);
   }
   .badge-human { background: var(--sage-bg); color: var(--sage-green); border-color: #D2E5D8; }
+  .badge-tl { background: #2C2825; color: #B4F000; border-color: #2C2825; }
+
   .contact-pill {
     display: inline-flex; align-items: center; gap: 6px; background: var(--bg-milk);
-    color: var(--text-main); border: 1px dashed #D5CBBF; padding: 4px 12px;
+    color: var(--text-main); border: 1px dashed #D5CBBF; padding: 5px 12px;
     border-radius: 999px; font-size: 0.75rem; font-weight: 600; cursor: pointer;
     transition: 0.2s; font-family: inherit;
   }
   .contact-pill:hover { background: var(--bg-oat); border-style: solid; border-color: var(--wood-main); }
   .ico { width: 13px; height: 13px; display: inline-block; vertical-align: middle; }
-  .cta-group { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
-  .top-row-controls { display: flex; align-items: center; gap: 10px; }
-  .lang-toggle {
-    background: var(--bg-oat); border: 1px solid var(--border-soft); padding: 6px 12px;
-    border-radius: 999px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+
+  .cta-section {
+    width: 100%; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-soft);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
   }
+
   .btn-vgen {
     background: var(--vgen-lime); color: var(--vgen-text); font-weight: 800;
-    font-size: 0.92rem; padding: 11px 22px; border-radius: 999px; border: 1px solid #96CC00;
+    font-size: 0.94rem; padding: 11px 26px; border-radius: 999px; border: 1px solid #96CC00;
     text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
     box-shadow: 0 4px 14px rgba(180, 240, 0, 0.35); transition: 0.2s;
   }
   .btn-vgen:hover { background: var(--vgen-hover); transform: translateY(-2px); }
-  .social-grid { display: flex; flex-wrap: nowrap; gap: 6px; justify-content: flex-end; align-items: center; }
+
+  .social-grid {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center;
+  }
   .btn-social {
     background: var(--bg-milk); color: var(--text-main); border: 1px solid var(--border-soft);
     padding: 6px 11px; border-radius: 999px; font-size: 0.74rem; font-weight: 600;
@@ -69,6 +95,45 @@
     display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
   }
   .btn-social:hover { background: var(--bg-oat); border-color: var(--wood-main); transform: translateY(-1px); }
+
+  /* กล่องขวา: Random Image Showcase */
+  .random-card {
+    background: var(--bg-card); border: 1px solid var(--border-soft);
+    border-radius: 18px; padding: 14px; position: relative;
+    display: flex; flex-direction: column; justify-content: center;
+    box-shadow: 0 4px 20px rgba(156, 126, 99, 0.05); min-height: 400px; overflow: hidden;
+  }
+  .random-stage {
+    width: 100%; height: 100%; min-height: 370px; border-radius: 12px;
+    background: var(--bg-oat); position: relative; overflow: hidden; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .random-bg-blur {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    filter: blur(22px) brightness(0.9); transform: scale(1.1); opacity: 0.45;
+  }
+  .random-img {
+    position: relative; z-index: 2; max-width: 100%; max-height: 380px;
+    object-fit: contain; border-radius: 8px; transition: transform 0.35s ease;
+  }
+  .random-stage:hover .random-img { transform: scale(1.02); }
+  .random-overlay-top {
+    position: absolute; top: 12px; left: 12px; right: 12px; z-index: 3;
+    display: flex; justify-content: space-between; align-items: center; pointer-events: none;
+  }
+  .random-pill {
+    pointer-events: auto; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(6px);
+    border: 1px solid var(--border-soft); padding: 5px 12px; border-radius: 999px;
+    font-size: 0.76rem; font-weight: 700; color: var(--text-main); cursor: pointer;
+  }
+  .random-overlay-bottom {
+    position: absolute; bottom: 12px; left: 12px; right: 12px; z-index: 3;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(6px);
+    padding: 8px 14px; border-radius: 10px; border: 1px solid var(--border-soft);
+  }
+  .random-title { font-size: 0.88rem; font-weight: 700; }
+
   .filter-bar {
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
     gap: 14px; margin: 28px 0 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border-soft);
@@ -80,6 +145,8 @@
   }
   .filter-btn.active { background: var(--text-main); color: #FFF; }
   .hint-text { font-size: 0.8rem; color: var(--text-sub); }
+
+  /* หน้าต่างขยายดูงาน + ดูคลิป Timelapse */
   .inspector {
     display: none; background: var(--bg-card); border: 1px solid var(--wood-main);
     border-radius: 16px; padding: 28px; margin-bottom: 32px;
@@ -90,36 +157,50 @@
   .viewer-stage { background: var(--bg-milk); border: 1px solid var(--border-soft); border-radius: 10px; padding: 16px; }
   .viewer-stage.dark-mode { background: #18181B; border-color: #2E2E36; }
   .viewer-img { width: 100%; border-radius: 6px; display: block; }
-  .viewer-controls { display: flex; justify-content: flex-end; margin-top: 12px; }
+  .viewer-iframe { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 6px; display: none; background: #000; }
+  .viewer-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
   .inspector-info h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
   .inspector-desc { color: var(--text-sub); font-size: 0.9rem; margin: 12px 0 22px; }
   .vgen-box { background: var(--bg-milk); border: 1px solid var(--border-soft); border-radius: 10px; padding: 18px; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px; }
   .art-card {
     background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 16px;
-    padding: 12px; cursor: pointer; transition: 0.25s;
+    padding: 12px; cursor: pointer; transition: 0.25s; position: relative;
   }
   .art-card:hover { transform: translateY(-4px); border-color: var(--wood-main); }
   .art-thumb { width: 100%; aspect-ratio: 4/4; object-fit: cover; display: block; border-radius: 10px; background: var(--bg-oat); }
-  .art-footer { padding: 12px 6px 4px; display: flex; justify-content: space-between; align-items: center; }
+  .art-footer { padding: 12px 6px 4px; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
   .art-footer h4 { font-size: 0.92rem; font-weight: 600; }
-  @media (max-width: 1150px) { .social-grid { flex-wrap: wrap; justify-content: flex-start; } .cta-group { align-items: flex-start; } }
-  @media (max-width: 800px) { .inspector-body, .gallery-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 960px) {
+    .hero-grid, .inspector-body { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
-  <header class="profile-header">
-    <div class="profile-left">
-      <img id="profileAvatar" class="avatar" src="https://picsum.photos/id/64/300/300" alt="DASShu Avatar">
-      <div class="identity">
-        <h1>DASShu</h1>
-        <p id="txtSubRole">Character Illustrator • Adoptable &amp; OC Designer</p>
+  <section class="hero-grid">
+    <!-- กล่องซ้าย: Profile แนวตั้งตามภาพร่าง -->
+    <div class="profile-card">
+      <button class="lang-toggle" onclick="toggleLanguage()">🌐 <span id="langLabel">EN</span></button>
+
+      <div>
+        <img id="profileAvatar" class="avatar" src="https://picsum.photos/id/64/300/300" alt="DASShu Avatar">
+        <div class="identity">
+          <h1>DASShu</h1>
+          <p id="txtSubRole">Character Illustrator • Adoptable &amp; OC Designer</p>
+        </div>
+
         <div class="badge-strip">
           <span class="badge badge-human">✓ 100% Human</span>
           <span class="badge">🎨 Clip Studio Paint</span>
           <span class="badge">🌐 TH / EN OK</span>
         </div>
+
         <div class="contact-strip">
           <button class="contact-pill" onclick="copyContact('dash075678', this, 'dash075678')">
             <img class="ico" src="https://cdn.simpleicons.org/discord/5865F2" alt="">
@@ -131,43 +212,56 @@
           </button>
         </div>
       </div>
-    </div>
 
-    <div class="cta-group">
-      <div class="top-row-controls">
-        <button class="lang-toggle" onclick="toggleLanguage()">🌐 <span id="langLabel">EN</span></button>
+      <div class="cta-section">
         <a class="btn-vgen" id="vgenBtn" href="https://vgen.co/dasshu" target="_blank" rel="noopener">
           ✨ Commission on VGen ↗
         </a>
-      </div>
-      <div class="social-grid">
-        <a class="btn-social" href="https://x.com/DASShu_ART" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/x/2C2825" alt=""> X
-        </a>
-        <a class="btn-social" href="https://bsky.app/profile/dasshuart.bsky.social" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/bluesky/0285FF" alt=""> Bluesky
-        </a>
-        <a class="btn-social" href="https://www.instagram.com/dasshu2025/" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/instagram/E4405F" alt=""> Instagram
-        </a>
-        <a class="btn-social" href="https://www.facebook.com/profile.php?id=61595692035249" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/facebook/1877F2" alt=""> Facebook
-        </a>
-        <a class="btn-social" href="https://www.tiktok.com/@dasshu9" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/tiktok/2C2825" alt=""> TikTok
-        </a>
-        <a class="btn-social" href="https://www.pixiv.net/en/users/126719691" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/pixiv/0096FA" alt=""> Pixiv
-        </a>
-        <a class="btn-social" href="https://www.deviantart.com/dasshuart" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/deviantart/05CC47" alt=""> DeviantArt
-        </a>
-        <a class="btn-social" href="https://youtube.com/@dasshu3647?si=3BB3op5EhpLm62m0" target="_blank" rel="noopener">
-          <img class="ico" src="https://cdn.simpleicons.org/youtube/FF0000" alt=""> YouTube
-        </a>
+        <div class="social-grid">
+          <a class="btn-social" href="https://x.com/DASShu_ART" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/x/2C2825" alt=""> X
+          </a>
+          <a class="btn-social" href="https://bsky.app/profile/dasshuart.bsky.social" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/bluesky/0285FF" alt=""> Bluesky
+          </a>
+          <a class="btn-social" href="https://www.instagram.com/dasshu2025/" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/instagram/E4405F" alt=""> Instagram
+          </a>
+          <a class="btn-social" href="https://www.facebook.com/profile.php?id=61595692035249" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/facebook/1877F2" alt=""> Facebook
+          </a>
+          <a class="btn-social" href="https://www.tiktok.com/@dasshu9" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/tiktok/2C2825" alt=""> TikTok
+          </a>
+          <a class="btn-social" href="https://www.pixiv.net/en/users/126719691" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/pixiv/0096FA" alt=""> Pixiv
+          </a>
+          <a class="btn-social" href="https://www.deviantart.com/dasshuart" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/deviantart/05CC47" alt=""> DeviantArt
+          </a>
+          <a class="btn-social" href="https://youtube.com/@dasshu3647?si=3BB3op5EhpLm62m0" target="_blank" rel="noopener">
+            <img class="ico" src="https://cdn.simpleicons.org/youtube/FF0000" alt=""> YouTube
+          </a>
+        </div>
       </div>
     </div>
-  </header>
+
+    <!-- กล่องขวา: Random Image สุ่มแสดงผลงานตามภาพร่าง -->
+    <div class="random-card">
+      <div class="random-stage" id="randomStage" onclick="openCurrentRandom()">
+        <div class="random-bg-blur" id="randomBgBlur"></div>
+        <div class="random-overlay-top">
+          <span class="random-pill" id="lblRandomTag">🎲 Random Showcase</span>
+          <button class="random-pill" onclick="event.stopPropagation(); pickRandomArtwork();" id="btnShuffle">↻ Shuffle</button>
+        </div>
+        <img id="randomImg" class="random-img" src="" alt="Random Featured Work" style="display:none;">
+        <div class="random-overlay-bottom" id="randomFooter" style="display:none;">
+          <span class="random-title" id="randomTitle">Artwork</span>
+          <span class="badge" id="randomCat">Category</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="filter-bar">
     <div class="filter-group">
@@ -180,21 +274,31 @@
 
   <section id="inspector" class="inspector">
     <div class="inspector-header">
-      <span id="inspTag" class="badge">Category</span>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <span id="inspTag" class="badge">Category</span>
+        <span id="inspTlBadge" class="badge badge-tl" style="display:none;">🎬 Timelapse Available</span>
+      </div>
       <button class="btn-social" onclick="closeInspector()" id="btnClose">✕ Close</button>
     </div>
     <div class="inspector-body">
       <div>
         <div id="viewerStage" class="viewer-stage">
           <img id="inspImg" class="viewer-img" src="" alt="Full Artwork">
+          <iframe id="inspVideo" class="viewer-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
         <div class="viewer-controls">
+          <button class="btn-social" id="btnToggleVideo" style="display:none; background:#2C2825; color:#B4F000;" onclick="toggleVideoMode()">
+            🎬 Watch Timelapse Video
+          </button>
           <button class="btn-social" onclick="toggleCanvasTheme()" id="btnTheme">🌙 Toggle Canvas Background</button>
         </div>
       </div>
       <div class="inspector-info">
         <h3 id="inspTitle">Artwork Title</h3>
         <p id="inspDesc" class="inspector-desc"></p>
+        <a id="inspExternalTl" class="btn-social" style="display:none; margin-bottom:16px; width:100%; justify-content:center; padding:10px;" href="#" target="_blank" rel="noopener">
+          🎬 Open Timelapse in New Tab ↗
+        </a>
         <div class="vgen-box">
           <strong style="display:block; margin-bottom:6px; font-size:0.9rem;" id="boxHead">Like this art style?</strong>
           <p style="font-size:0.82rem; color:var(--text-sub); margin-bottom:14px;" id="boxDesc">
@@ -213,21 +317,27 @@
 <script>
   const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
   let currentLang = 'en';
+  let allArtworks = [];
+  let currentRandomItem = null;
+  let currentInspTimelapse = "";
+  let isShowingVideo = false;
 
   const translations = {
     en: {
       subRole: "Character Illustrator • Adoptable &amp; OC Designer",
       vgenBtn: "✨ Commission on VGen ↗", allWorks: "All Works", illust: "Illustration", adopt: "Adoptable",
-      hint: "☕ Click on artwork to zoom in", close: "✕ Close", theme: "🌙 Toggle Canvas Background (Dark/Light)",
+      hint: "☕ Click on artwork to zoom in", close: "✕ Close", theme: "🌙 Toggle Canvas Background",
       boxHead: "Like this art style?", boxDesc: "Check pricing, queue slots, and commission securely via DASShu's VGen.",
-      boxBtn: "✨ View Pricing &amp; Order on VGen ↗", loading: "⏳ Loading gallery...", empty: "☕ No artworks found"
+      boxBtn: "✨ View Pricing &amp; Order on VGen ↗", loading: "⏳ Loading gallery...", empty: "☕ No artworks found",
+      randomTag: "🎲 Random Showcase", shuffle: "↻ Shuffle", watchTl: "🎬 Watch Timelapse Video", viewArt: "🖼️ Back to Artwork"
     },
     th: {
       subRole: "นักวาดภาพคาแรกเตอร์ • นักออกแบบตัวละครและ Adoptable",
       vgenBtn: "✨ สั่งงานคอมมิชชันบน VGen ↗", allWorks: "ผลงานทั้งหมด", illust: "ภาพประกอบ (Illustration)", adopt: "ตัวละครพร้อมขาย (Adoptable)",
       hint: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย", close: "✕ ปิดหน้าต่างขยาย", theme: "🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)",
       boxHead: "ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?", boxDesc: "ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง",
-      boxBtn: "✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗", loading: "⏳ กำลังโหลดแกลเลอรี...", empty: "☕ ยังไม่มีรูปในระบบ"
+      boxBtn: "✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗", loading: "⏳ กำลังโหลดแกลเลอรี...", empty: "☕ ยังไม่มีรูปในระบบ",
+      randomTag: "🎲 สุ่มโชว์ผลงาน", shuffle: "↻ สุ่มรูปใหม่", watchTl: "🎬 ดูคลิป Timelapse", viewArt: "🖼️ กลับไปดูภาพผลงาน"
     }
   };
 
@@ -254,6 +364,8 @@
     document.getElementById('boxHead').innerText = t.boxHead;
     document.getElementById('boxDesc').innerText = t.boxDesc;
     document.getElementById('boxBtn').innerHTML = t.boxBtn;
+    document.getElementById('lblRandomTag').innerText = t.randomTag;
+    document.getElementById('btnShuffle').innerText = t.shuffle;
   }
 
   function loadGallery() {
@@ -266,12 +378,34 @@
   window.onPortfolioLoaded = function(res) {
     if (res.avatarUrl) document.getElementById('profileAvatar').src = res.avatarUrl;
     if (res.artworks && res.artworks.length > 0) {
-      renderCards(res.artworks);
+      allArtworks = res.artworks;
+      renderCards(allArtworks);
+      pickRandomArtwork();
       document.getElementById('statusText').innerText = translations[currentLang].hint;
     } else {
       document.getElementById('statusText').innerText = translations[currentLang].empty;
     }
   };
+
+  function pickRandomArtwork() {
+    if (!allArtworks.length) return;
+    let nextItem = allArtworks[Math.floor(Math.random() * allArtworks.length)];
+    if (allArtworks.length > 1 && currentRandomItem && nextItem.finalUrl === currentRandomItem.finalUrl) {
+      nextItem = allArtworks[(allArtworks.indexOf(nextItem) + 1) % allArtworks.length];
+    }
+    currentRandomItem = nextItem;
+    const imgEl = document.getElementById('randomImg');
+    imgEl.src = nextItem.finalUrl;
+    imgEl.style.display = 'block';
+    document.getElementById('randomBgBlur').style.backgroundImage = `url('${nextItem.finalUrl}')`;
+    document.getElementById('randomTitle').innerText = nextItem.title + (nextItem.timelapseUrl ? ' 🎬' : '');
+    document.getElementById('randomCat').innerText = nextItem.categoryLabel;
+    document.getElementById('randomFooter').style.display = 'flex';
+  }
+
+  function openCurrentRandom() {
+    if (currentRandomItem) openInspector(currentRandomItem);
+  }
 
   function renderCards(items) {
     const grid = document.getElementById('galleryGrid');
@@ -280,11 +414,84 @@
       const card = document.createElement('div');
       card.className = 'art-card';
       card.dataset.cat = item.category;
-      card.onclick = () => openInspector(item.title, item.categoryLabel, item.desc, item.finalUrl);
+      card.onclick = () => openInspector(item);
+      const tlBadge = item.timelapseUrl ? `<span class="badge badge-tl">🎬 Timelapse</span>` : '';
       card.innerHTML = `<img class="art-thumb" src="${item.finalUrl}" alt="${item.title}" loading="lazy">
-        <div class="art-footer"><h4>${item.title}</h4><span class="badge">${item.categoryLabel}</span></div>`;
+        <div class="art-footer">
+          <h4>${item.title}</h4>
+          <div style="display:flex; gap:4px;">${tlBadge}<span class="badge">${item.categoryLabel}</span></div>
+        </div>`;
       grid.appendChild(card);
     });
+  }
+
+  function getEmbedUrl(url) {
+    if (!url) return "";
+    const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+    if (ytMatch) return "https://www.youtube.com/embed/" + ytMatch[1];
+    const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (driveMatch && url.includes("drive.google.com")) return "https://drive.google.com/file/d/" + driveMatch[1] + "/preview";
+    return "";
+  }
+
+  function openInspector(item) {
+    document.getElementById('inspTitle').innerText = item.title;
+    document.getElementById('inspTag').innerText = item.categoryLabel;
+    document.getElementById('inspDesc').innerText = item.desc;
+    document.getElementById('inspImg').src = item.finalUrl;
+
+    currentInspTimelapse = item.timelapseUrl || "";
+    isShowingVideo = false;
+    document.getElementById('inspImg').style.display = 'block';
+    const videoIframe = document.getElementById('inspVideo');
+    videoIframe.style.display = 'none';
+    videoIframe.src = "";
+
+    const tlBadge = document.getElementById('inspTlBadge');
+    const btnToggleVideo = document.getElementById('btnToggleVideo');
+    const extLink = document.getElementById('inspExternalTl');
+
+    if (currentInspTimelapse) {
+      tlBadge.style.display = 'inline-block';
+      extLink.href = currentInspTimelapse;
+      extLink.style.display = 'inline-flex';
+      const embedUrl = getEmbedUrl(currentInspTimelapse);
+      if (embedUrl) {
+        btnToggleVideo.style.display = 'inline-flex';
+        btnToggleVideo.innerText = translations[currentLang].watchTl;
+      } else {
+        btnToggleVideo.style.display = 'none';
+      }
+    } else {
+      tlBadge.style.display = 'none';
+      btnToggleVideo.style.display = 'none';
+      extLink.style.display = 'none';
+    }
+
+    const insp = document.getElementById('inspector');
+    insp.classList.add('open');
+    insp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function toggleVideoMode() {
+    const embedUrl = getEmbedUrl(currentInspTimelapse);
+    if (!embedUrl) return;
+    const imgEl = document.getElementById('inspImg');
+    const videoIframe = document.getElementById('inspVideo');
+    const btn = document.getElementById('btnToggleVideo');
+
+    isShowingVideo = !isShowingVideo;
+    if (isShowingVideo) {
+      imgEl.style.display = 'none';
+      videoIframe.src = embedUrl;
+      videoIframe.style.display = 'block';
+      btn.innerText = translations[currentLang].viewArt;
+    } else {
+      videoIframe.src = "";
+      videoIframe.style.display = 'none';
+      imgEl.style.display = 'block';
+      btn.innerText = translations[currentLang].watchTl;
+    }
   }
 
   function filterGallery(cat, btn) {
@@ -296,18 +503,12 @@
     });
   }
 
-  function openInspector(title, tag, desc, finalUrl) {
-    document.getElementById('inspTitle').innerText = title;
-    document.getElementById('inspTag').innerText = tag;
-    document.getElementById('inspDesc').innerText = desc;
-    document.getElementById('inspImg').src = finalUrl;
-    const insp = document.getElementById('inspector');
-    insp.classList.add('open');
-    insp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
   function toggleCanvasTheme() { document.getElementById('viewerStage').classList.toggle('dark-mode'); }
-  function closeInspector() { document.getElementById('inspector').classList.remove('open'); }
+
+  function closeInspector() {
+    document.getElementById('inspVideo').src = "";
+    document.getElementById('inspector').classList.remove('open');
+  }
 
   document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
   updateTexts();
