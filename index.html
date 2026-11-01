@@ -3,405 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- 1. สั่งห้ามบอท AI กวาดข้อมูลและรูปภาพในหน้านี้ -->
 <meta name="robots" content="noai, noimageai">
 <title>DASShu Portfolio Showroom</title>
 <style>
   :root {
-    --bg-milk: #FAF8F5;
-    --bg-card: #FFFFFF;
-    --bg-oat: #F2ECE4;
-    --wood-main: #9C7E63;
-    --wood-hover: #7D6249;
-    --wood-soft: #EFE9E1;
-    --vgen-lime: #B4F000;
-    --vgen-hover: #9FE000;
-    --vgen-text: #142400;
-    --sage-green: #5B8C6E;
-    --sage-bg: #EBF3ED;
-    --text-main: #2C2825;
-    --text-sub: #857D75;
-    --border-soft: #E8E1D9;
-    --radius-lg: 16px;
-    --radius-md: 10px;
+    --bg-milk: #FAF8F5; --bg-card: #FFFFFF; --bg-oat: #F2ECE4;
+    --wood-main: #9C7E63; --wood-soft: #EFE9E1;
+    --vgen-lime: #B4F000; --vgen-hover: #9FE000; --vgen-text: #142400;
+    --sage-green: #5B8C6E; --sage-bg: #EBF3ED;
+    --text-main: #2C2825; --text-sub: #857D75; --border-soft: #E8E1D9;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  /* 2. ห้ามลากรูปออกจากเว็บ และห้ามกดค้างเซฟรูปบนมือถือ */
-  img {
-    -webkit-user-drag: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-  }
-
+  img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
   body {
-    background-color: var(--bg-milk);
-    color: var(--text-main);
+    background: var(--bg-milk); color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
-    line-height: 1.65;
-    padding: 20px 2%;
-    max-width: 100%;
-    margin: 0 auto;
+    line-height: 1.65; padding: 20px 2%; max-width: 100%; margin: 0 auto;
   }
-
   .profile-header {
-    background: var(--bg-card);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-lg);
-    padding: 26px 30px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
+    background: var(--bg-card); border: 1px solid var(--border-soft);
+    border-radius: 16px; padding: 26px 30px; display: flex; flex-wrap: wrap;
+    justify-content: space-between; align-items: center; gap: 20px;
     box-shadow: 0 4px 20px rgba(156, 126, 99, 0.05);
   }
-
-  .profile-left {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
+  .profile-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
   .avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--bg-oat);
-    padding: 3px;
-    background: var(--bg-card);
+    width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+    border: 4px solid var(--bg-oat); padding: 3px; background: var(--bg-card);
     box-shadow: 0 4px 14px rgba(156, 126, 99, 0.12);
   }
-
-  .identity h1 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    color: var(--text-main);
-    line-height: 1.2;
-  }
-
-  .identity p {
-    color: var(--text-sub);
-    font-size: 0.92rem;
-    margin-top: 4px;
-  }
-
-  .badge-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
+  .identity h1 { font-size: 1.75rem; font-weight: 800; line-height: 1.2; }
+  .identity p { color: var(--text-sub); font-size: 0.92rem; margin-top: 4px; }
+  .badge-strip, .contact-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .badge {
-    font-size: 0.74rem;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 999px;
-    background: var(--bg-oat);
-    color: #695E53;
-    border: 1px solid var(--border-soft);
+    font-size: 0.74rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+    background: var(--bg-oat); color: #695E53; border: 1px solid var(--border-soft);
   }
-
-  .badge-human {
-    background: var(--sage-bg);
-    color: var(--sage-green);
-    border-color: #D2E5D8;
-  }
-
-  .contact-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
+  .badge-human { background: var(--sage-bg); color: var(--sage-green); border-color: #D2E5D8; }
   .contact-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--bg-milk);
-    color: var(--text-main);
-    border: 1px dashed #D5CBBF;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
+    display: inline-flex; align-items: center; gap: 6px; background: var(--bg-milk);
+    color: var(--text-main); border: 1px dashed #D5CBBF; padding: 4px 12px;
+    border-radius: 999px; font-size: 0.75rem; font-weight: 600; cursor: pointer;
+    transition: 0.2s; font-family: inherit;
   }
-
-  .contact-pill:hover {
-    background: var(--bg-oat);
-    border-style: solid;
-    border-color: var(--wood-main);
-    transform: translateY(-1px);
-  }
-
-  .contact-pill svg {
-    width: 14px;
-    height: 14px;
-    flex-shrink: 0;
-  }
-
-  .cta-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 14px;
-  }
-
-  .top-row-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
+  .contact-pill:hover { background: var(--bg-oat); border-style: solid; border-color: var(--wood-main); }
+  .ico { width: 13px; height: 13px; display: inline-block; vertical-align: middle; }
+  .cta-group { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .top-row-controls { display: flex; align-items: center; gap: 10px; }
   .lang-toggle {
-    background: var(--bg-oat);
-    border: 1px solid var(--border-soft);
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    color: var(--text-main);
-    transition: 0.2s;
+    background: var(--bg-oat); border: 1px solid var(--border-soft); padding: 6px 12px;
+    border-radius: 999px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
   }
-  .lang-toggle:hover { background: var(--wood-soft); }
-
   .btn-vgen {
-    background: var(--vgen-lime);
-    color: var(--vgen-text);
-    font-weight: 800;
-    font-size: 0.92rem;
-    padding: 11px 22px;
-    border-radius: 999px;
-    border: 1px solid #96CC00;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 14px rgba(180, 240, 0, 0.35);
+    background: var(--vgen-lime); color: var(--vgen-text); font-weight: 800;
+    font-size: 0.92rem; padding: 11px 22px; border-radius: 999px; border: 1px solid #96CC00;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 14px rgba(180, 240, 0, 0.35); transition: 0.2s;
   }
-
-  .btn-vgen:hover {
-    background: var(--vgen-hover);
-    transform: translateY(-2px);
-  }
-
-  .social-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 6px;
-    justify-content: flex-end;
-    align-items: center;
-    max-width: none;
-  }
-
+  .btn-vgen:hover { background: var(--vgen-hover); transform: translateY(-2px); }
+  .social-grid { display: flex; flex-wrap: nowrap; gap: 6px; justify-content: flex-end; align-items: center; }
   .btn-social {
-    background: var(--bg-milk);
-    color: var(--text-main);
-    border: 1px solid var(--border-soft);
-    padding: 6px 11px;
-    border-radius: 999px;
-    font-size: 0.74rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    white-space: nowrap;
+    background: var(--bg-milk); color: var(--text-main); border: 1px solid var(--border-soft);
+    padding: 6px 11px; border-radius: 999px; font-size: 0.74rem; font-weight: 600;
+    text-decoration: none; cursor: pointer; transition: 0.2s;
+    display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
   }
-
-  .btn-social svg {
-    width: 13px;
-    height: 13px;
-    flex-shrink: 0;
-  }
-
-  .btn-social:hover {
-    background: var(--bg-oat);
-    border-color: var(--wood-main);
-    transform: translateY(-1px);
-  }
-
+  .btn-social:hover { background: var(--bg-oat); border-color: var(--wood-main); transform: translateY(-1px); }
   .filter-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin: 28px 0 22px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-soft);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+    gap: 14px; margin: 28px 0 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border-soft);
   }
-
-  .filter-group {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
+  .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
   .filter-btn {
-    background: transparent;
-    color: var(--text-sub);
-    border: 1px solid transparent;
-    padding: 8px 16px;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
+    background: transparent; color: var(--text-sub); border: none; padding: 8px 16px;
+    border-radius: 999px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
   }
-
-  .filter-btn:hover {
-    color: var(--text-main);
-    background: var(--wood-soft);
-  }
-
-  .filter-btn.active {
-    background: var(--text-main);
-    color: #FFFFFF;
-  }
-
-  .hint-text {
-    font-size: 0.8rem;
-    color: var(--text-sub);
-  }
-
+  .filter-btn.active { background: var(--text-main); color: #FFF; }
+  .hint-text { font-size: 0.8rem; color: var(--text-sub); }
   .inspector {
-    display: none;
-    background: var(--bg-card);
-    border: 1px solid var(--wood-main);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    margin-bottom: 32px;
-    box-shadow: 0 10px 30px rgba(44, 40, 37, 0.06);
+    display: none; background: var(--bg-card); border: 1px solid var(--wood-main);
+    border-radius: 16px; padding: 28px; margin-bottom: 32px;
   }
-
   .inspector.open { display: block; }
-
-  .inspector-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-  }
-
-  .inspector-body {
-    display: grid;
-    grid-template-columns: 1.55fr 1fr;
-    gap: 28px;
-    align-items: start;
-  }
-
-  .viewer-stage {
-    background: var(--bg-milk);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    transition: background 0.25s ease;
-  }
-
-  .viewer-stage.dark-mode {
-    background: #18181B;
-    border-color: #2E2E36;
-  }
-
-  .viewer-img {
-    width: 100%;
-    border-radius: 6px;
-    display: block;
-  }
-
-  .viewer-controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 12px;
-  }
-
-  .inspector-info h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-
-  .inspector-desc {
-    color: var(--text-sub);
-    font-size: 0.9rem;
-    margin: 12px 0 22px;
-  }
-
-  .vgen-box {
-    background: var(--bg-milk);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-md);
-    padding: 18px;
-  }
-
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-  }
-
+  .inspector-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .inspector-body { display: grid; grid-template-columns: 1.55fr 1fr; gap: 28px; align-items: start; }
+  .viewer-stage { background: var(--bg-milk); border: 1px solid var(--border-soft); border-radius: 10px; padding: 16px; }
+  .viewer-stage.dark-mode { background: #18181B; border-color: #2E2E36; }
+  .viewer-img { width: 100%; border-radius: 6px; display: block; }
+  .viewer-controls { display: flex; justify-content: flex-end; margin-top: 12px; }
+  .inspector-info h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+  .inspector-desc { color: var(--text-sub); font-size: 0.9rem; margin: 12px 0 22px; }
+  .vgen-box { background: var(--bg-milk); border: 1px solid var(--border-soft); border-radius: 10px; padding: 18px; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
   .art-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-lg);
-    padding: 12px;
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    box-shadow: 0 2px 10px rgba(44, 40, 37, 0.03);
+    background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 16px;
+    padding: 12px; cursor: pointer; transition: 0.25s;
   }
-
-  .art-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--wood-main);
-    box-shadow: 0 12px 24px rgba(156, 126, 99, 0.12);
-  }
-
-  .art-thumb {
-    width: 100%;
-    aspect-ratio: 4 / 4;
-    object-fit: cover;
-    display: block;
-    border-radius: 10px;
-    background: var(--bg-oat);
-  }
-
-  .art-footer {
-    padding: 12px 6px 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .art-footer h4 {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: var(--text-main);
-  }
-
-  @media (max-width: 1150px) {
-    .social-grid { flex-wrap: wrap; justify-content: flex-start; }
-    .cta-group { align-items: flex-start; }
-  }
-
-  @media (max-width: 800px) {
-    .inspector-body { grid-template-columns: 1fr; }
-    .gallery-grid { grid-template-columns: 1fr; }
-  }
+  .art-card:hover { transform: translateY(-4px); border-color: var(--wood-main); }
+  .art-thumb { width: 100%; aspect-ratio: 4/4; object-fit: cover; display: block; border-radius: 10px; background: var(--bg-oat); }
+  .art-footer { padding: 12px 6px 4px; display: flex; justify-content: space-between; align-items: center; }
+  .art-footer h4 { font-size: 0.92rem; font-weight: 600; }
+  @media (max-width: 1150px) { .social-grid { flex-wrap: wrap; justify-content: flex-start; } .cta-group { align-items: flex-start; } }
+  @media (max-width: 800px) { .inspector-body, .gallery-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -418,12 +121,12 @@
           <span class="badge">🌐 TH / EN OK</span>
         </div>
         <div class="contact-strip">
-          <button class="contact-pill" onclick="copyContact('dash075678', this, 'dash075678')" title="Click to copy Discord ID">
-            <svg fill="#5865F2" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          <button class="contact-pill" onclick="copyContact('dash075678', this, 'dash075678')">
+            <img class="ico" src="https://cdn.simpleicons.org/discord/5865F2" alt="">
             <span class="pill-text">dash075678</span>
           </button>
-          <button class="contact-pill" onclick="copyContact('dasshuart9@gmail.com', this, 'dasshuart9@gmail.com')" title="Click to copy Email">
-            <svg fill="#EA4335" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          <button class="contact-pill" onclick="copyContact('dasshuart9@gmail.com', this, 'dasshuart9@gmail.com')">
+            <img class="ico" src="https://cdn.simpleicons.org/gmail/EA4335" alt="">
             <span class="pill-text">dasshuart9@gmail.com</span>
           </button>
         </div>
@@ -433,43 +136,34 @@
     <div class="cta-group">
       <div class="top-row-controls">
         <button class="lang-toggle" onclick="toggleLanguage()">🌐 <span id="langLabel">EN</span></button>
-        <a class="btn-vgen" id="vgenBtn" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer">
+        <a class="btn-vgen" id="vgenBtn" href="https://vgen.co/dasshu" target="_blank" rel="noopener">
           ✨ Commission on VGen ↗
         </a>
       </div>
-
       <div class="social-grid">
-        <a class="btn-social" href="https://x.com/DASShu_ART" target="_blank" rel="noopener noreferrer">
-          <svg fill="#2C2825" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          X
+        <a class="btn-social" href="https://x.com/DASShu_ART" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/x/2C2825" alt=""> X
         </a>
-        <a class="btn-social" href="https://bsky.app/profile/dasshuart.bsky.social" target="_blank" rel="noopener noreferrer">
-          <svg fill="#0285FF" viewBox="0 0 24 24"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg>
-          Bluesky
+        <a class="btn-social" href="https://bsky.app/profile/dasshuart.bsky.social" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/bluesky/0285FF" alt=""> Bluesky
         </a>
-        <a class="btn-social" href="https://www.instagram.com/dasshu2025/" target="_blank" rel="noopener noreferrer">
-          <svg fill="#E4405F" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          Instagram
+        <a class="btn-social" href="https://www.instagram.com/dasshu2025/" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/instagram/E4405F" alt=""> Instagram
         </a>
-        <a class="btn-social" href="https://www.facebook.com/profile.php?id=61595692035249" target="_blank" rel="noopener noreferrer">
-          <svg fill="#1877F2" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          Facebook
+        <a class="btn-social" href="https://www.facebook.com/profile.php?id=61595692035249" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/facebook/1877F2" alt=""> Facebook
         </a>
-        <a class="btn-social" href="https://www.tiktok.com/@dasshu9" target="_blank" rel="noopener noreferrer">
-          <svg fill="#2C2825" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-          TikTok
+        <a class="btn-social" href="https://www.tiktok.com/@dasshu9" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/tiktok/2C2825" alt=""> TikTok
         </a>
-        <a class="btn-social" href="https://www.pixiv.net/en/users/126719691" target="_blank" rel="noopener noreferrer">
-          <svg fill="#0096FA" viewBox="0 0 24 24"><path d="M4.935 0A4.924 4.924 0 0 0 0 4.935v14.13A4.924 4.924 0 0 0 4.935 24h14.13A4.924 4.924 0 0 0 24 19.065V4.935A4.924 4.924 0 0 0 19.065 0zm7.81 4.547c2.181 0 4.058.676 5.399 1.847a6.118 6.118 0 0 1 2.116 4.66c0 3.779-2.852 6.352-6.86 6.352H9.61v3.047h-3.1V4.547zm-.45 2.668H9.61v7.523h3.195c2.382 0 4.11-.995 4.11-3.762 0-2.55-1.63-3.761-4.62-3.761z"/></svg>
-          Pixiv
+        <a class="btn-social" href="https://www.pixiv.net/en/users/126719691" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/pixiv/0096FA" alt=""> Pixiv
         </a>
-        <a class="btn-social" href="https://www.deviantart.com/dasshuart" target="_blank" rel="noopener noreferrer">
-          <svg fill="#05CC47" viewBox="0 0 24 24"><path d="M19.207 4.794l.23-.43V0H15.07l-.436.44-2.058 3.925-.646.436H4.58v5.993h4.04l.36.436-4.175 7.98-.24.43V24H8.93l.436-.44 2.07-3.925.644-.436h7.35v-5.993h-4.05l-.36-.438 4.186-7.977z"/></svg>
-          DeviantArt
+        <a class="btn-social" href="https://www.deviantart.com/dasshuart" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/deviantart/05CC47" alt=""> DeviantArt
         </a>
-        <a class="btn-social" href="https://youtube.com/@dasshu3647?si=3BB3op5EhpLm62m0" target="_blank" rel="noopener noreferrer">
-          <svg fill="#FF0000" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          YouTube
+        <a class="btn-social" href="https://youtube.com/@dasshu3647?si=3BB3op5EhpLm62m0" target="_blank" rel="noopener">
+          <img class="ico" src="https://cdn.simpleicons.org/youtube/FF0000" alt=""> YouTube
         </a>
       </div>
     </div>
@@ -495,10 +189,9 @@
           <img id="inspImg" class="viewer-img" src="" alt="Full Artwork">
         </div>
         <div class="viewer-controls">
-          <button class="btn-social" onclick="toggleCanvasTheme()" id="btnTheme">🌙 Toggle Canvas Background (Dark/Light)</button>
+          <button class="btn-social" onclick="toggleCanvasTheme()" id="btnTheme">🌙 Toggle Canvas Background</button>
         </div>
       </div>
-
       <div class="inspector-info">
         <h3 id="inspTitle">Artwork Title</h3>
         <p id="inspDesc" class="inspector-desc"></p>
@@ -507,7 +200,7 @@
           <p style="font-size:0.82rem; color:var(--text-sub); margin-bottom:14px;" id="boxDesc">
             Check pricing, queue slots, and commission securely via DASShu's VGen.
           </p>
-          <a class="btn-vgen" style="width:100%; justify-content:center;" href="https://vgen.co/dasshu" target="_blank" rel="noopener noreferrer" id="boxBtn">
+          <a class="btn-vgen" style="width:100%; justify-content:center;" href="https://vgen.co/dasshu" target="_blank" rel="noopener" id="boxBtn">
             ✨ View Pricing &amp; Order on VGen ↗
           </a>
         </div>
@@ -519,40 +212,22 @@
 
 <script>
   const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
-
-  let currentLang = 'en'; 
-  let globalArtworks = [];
+  let currentLang = 'en';
 
   const translations = {
     en: {
       subRole: "Character Illustrator • Adoptable &amp; OC Designer",
-      vgenBtn: "✨ Commission on VGen ↗",
-      allWorks: "All Works",
-      illust: "Illustration",
-      adopt: "Adoptable",
-      hint: "☕ Click on artwork to zoom in",
-      close: "✕ Close",
-      theme: "🌙 Toggle Canvas Background (Dark/Light)",
-      boxHead: "Like this art style?",
-      boxDesc: "Check pricing, queue slots, and commission securely via DASShu's VGen.",
-      boxBtn: "✨ View Pricing &amp; Order on VGen ↗",
-      loading: "⏳ Loading gallery...",
-      empty: "☕ Click on artwork to zoom in (No artworks found)"
+      vgenBtn: "✨ Commission on VGen ↗", allWorks: "All Works", illust: "Illustration", adopt: "Adoptable",
+      hint: "☕ Click on artwork to zoom in", close: "✕ Close", theme: "🌙 Toggle Canvas Background (Dark/Light)",
+      boxHead: "Like this art style?", boxDesc: "Check pricing, queue slots, and commission securely via DASShu's VGen.",
+      boxBtn: "✨ View Pricing &amp; Order on VGen ↗", loading: "⏳ Loading gallery...", empty: "☕ No artworks found"
     },
     th: {
       subRole: "นักวาดภาพคาแรกเตอร์ • นักออกแบบตัวละครและ Adoptable",
-      vgenBtn: "✨ สั่งงานคอมมิชชันบน VGen ↗",
-      allWorks: "ผลงานทั้งหมด",
-      illust: "ภาพประกอบ (Illustration)",
-      adopt: "ตัวละครพร้อมขาย (Adoptable)",
-      hint: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย",
-      close: "✕ ปิดหน้าต่างขยาย",
-      theme: "🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)",
-      boxHead: "ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?",
-      boxDesc: "ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง",
-      boxBtn: "✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗",
-      loading: "⏳ กำลังโหลดแกลเลอรี...",
-      empty: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย (ยังไม่มีรูปในระบบ)"
+      vgenBtn: "✨ สั่งงานคอมมิชชันบน VGen ↗", allWorks: "ผลงานทั้งหมด", illust: "ภาพประกอบ (Illustration)", adopt: "ตัวละครพร้อมขาย (Adoptable)",
+      hint: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย", close: "✕ ปิดหน้าต่างขยาย", theme: "🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)",
+      boxHead: "ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?", boxDesc: "ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง",
+      boxBtn: "✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗", loading: "⏳ กำลังโหลดแกลเลอรี...", empty: "☕ ยังไม่มีรูปในระบบ"
     }
   };
 
@@ -560,19 +235,10 @@
     navigator.clipboard.writeText(text);
     const span = btn.querySelector('.pill-text');
     span.innerText = currentLang === 'th' ? '✓ คัดลอกแล้ว!' : '✓ Copied!';
-    btn.style.borderColor = '#5B8C6E';
-    btn.style.background = '#EBF3ED';
-    setTimeout(() => {
-      span.innerText = originalLabel;
-      btn.style.borderColor = '';
-      btn.style.background = '';
-    }, 1800);
+    setTimeout(() => { span.innerText = originalLabel; }, 1800);
   }
 
-  function toggleLanguage() {
-    currentLang = currentLang === 'en' ? 'th' : 'en';
-    updateTexts();
-  }
+  function toggleLanguage() { currentLang = currentLang === 'en' ? 'th' : 'en'; updateTexts(); }
 
   function updateTexts() {
     const t = translations[currentLang];
@@ -591,24 +257,19 @@
   }
 
   function loadGallery() {
-    const statusEl = document.getElementById('statusText');
-    statusEl.innerText = translations[currentLang].loading;
+    document.getElementById('statusText').innerText = translations[currentLang].loading;
     const script = document.createElement('script');
     script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
     document.body.appendChild(script);
   }
 
-  window.onPortfolioLoaded = function(response) {
-    const statusEl = document.getElementById('statusText');
-    if (response.avatarUrl) {
-      document.getElementById('profileAvatar').src = response.avatarUrl;
-    }
-    if (response.artworks && response.artworks.length > 0) {
-      globalArtworks = response.artworks;
-      renderCards(globalArtworks);
-      statusEl.innerText = translations[currentLang].hint;
+  window.onPortfolioLoaded = function(res) {
+    if (res.avatarUrl) document.getElementById('profileAvatar').src = res.avatarUrl;
+    if (res.artworks && res.artworks.length > 0) {
+      renderCards(res.artworks);
+      document.getElementById('statusText').innerText = translations[currentLang].hint;
     } else {
-      statusEl.innerText = translations[currentLang].empty;
+      document.getElementById('statusText').innerText = translations[currentLang].empty;
     }
   };
 
@@ -620,13 +281,8 @@
       card.className = 'art-card';
       card.dataset.cat = item.category;
       card.onclick = () => openInspector(item.title, item.categoryLabel, item.desc, item.finalUrl);
-      card.innerHTML = `
-        <img class="art-thumb" src="${item.finalUrl}" alt="${item.title}" loading="lazy">
-        <div class="art-footer">
-          <h4>${item.title}</h4>
-          <span class="badge">${item.categoryLabel}</span>
-        </div>
-      `;
+      card.innerHTML = `<img class="art-thumb" src="${item.finalUrl}" alt="${item.title}" loading="lazy">
+        <div class="art-footer"><h4>${item.title}</h4><span class="badge">${item.categoryLabel}</span></div>`;
       grid.appendChild(card);
     });
   }
@@ -635,8 +291,8 @@
     closeInspector();
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.querySelectorAll('.art-card').forEach(card => {
-      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    document.querySelectorAll('.art-card').forEach(c => {
+      c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
     });
   }
 
@@ -650,21 +306,10 @@
     insp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function toggleCanvasTheme() {
-    document.getElementById('viewerStage').classList.toggle('dark-mode');
-  }
+  function toggleCanvasTheme() { document.getElementById('viewerStage').classList.toggle('dark-mode'); }
+  function closeInspector() { document.getElementById('inspector').classList.remove('open'); }
 
-  function closeInspector() {
-    document.getElementById('inspector').classList.remove('open');
-  }
-
-  // 3. บล็อกคลิกขวาเฉพาะเมื่อคลิกบนรูปภาพทั้งหมด
-  document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-    }
-  });
-
+  document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
   updateTexts();
   loadGallery();
 </script>
