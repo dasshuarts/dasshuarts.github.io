@@ -125,16 +125,35 @@
   }
   .random-mini-btn:hover { background: #FFFFFF; transform: rotate(90deg) scale(1.08); }
 
+  /* แถบกรองหมวดหมู่และปุ่มเรียงลำดับข้างซ้ายข้อความ Click on artwork to zoom in */
   .filter-bar {
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
     gap: 14px; margin: 28px 0 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border-soft);
   }
-  .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .filter-btn {
     background: transparent; color: var(--text-sub); border: none; padding: 8px 16px;
-    border-radius: 999px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    border-radius: 999px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;
   }
+  .filter-btn:hover { color: var(--text-main); background: var(--bg-oat); }
   .filter-btn.active { background: var(--text-main); color: #FFF; }
+
+  .right-controls {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .sort-group {
+    display: inline-flex; align-items: center; background: var(--bg-oat);
+    padding: 4px; border-radius: 999px; border: 1px solid var(--border-soft); gap: 4px;
+  }
+  .sort-btn {
+    background: transparent; color: var(--text-sub); border: none; padding: 5px 12px;
+    border-radius: 999px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: 0.2s;
+  }
+  .sort-btn:hover { color: var(--text-main); }
+  .sort-btn.active {
+    background: var(--text-main); color: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(44, 40, 37, 0.12);
+  }
   .hint-text { font-size: 0.8rem; color: var(--text-sub); }
 
   .inspector {
@@ -174,7 +193,6 @@
       <button class="lang-toggle" onclick="toggleLanguage()">🌐 <span id="langLabel">EN</span></button>
 
       <div>
-        <!-- ลบ src เริ่มต้นออก ปล่อยโล่งจนกว่ารูปจริงจะโหลดเสร็จ -->
         <img id="profileAvatar" class="avatar" alt="DASShu Avatar">
         <div class="identity">
           <h1>DASShu</h1>
@@ -236,7 +254,6 @@
       <div class="random-stage" id="randomStage" onclick="openCurrentRandom()">
         <div class="random-bg-blur" id="randomBgBlur"></div>
         <button class="random-mini-btn" onclick="event.stopPropagation(); manualShuffle();" title="Shuffle Artwork">↻</button>
-        <!-- ปล่อยโล่งไม่มีรูปสำรอง -->
         <img id="randomImg" class="random-img" alt="Featured Artwork" style="display:none;">
       </div>
     </div>
@@ -248,7 +265,15 @@
       <button class="filter-btn" onclick="filterGallery('illust', this)" id="btnIllust">Illustration</button>
       <button class="filter-btn" onclick="filterGallery('adopt', this)" id="btnAdopt">Adoptable</button>
     </div>
-    <span class="hint-text" id="statusText">☕ Click on artwork to zoom in</span>
+
+    <!-- ปุ่มเรียงลำดับ ใหม่ไปเก่า / เก่าไปใหม่ อยู่ด้านซ้ายของ Click on artwork to zoom in -->
+    <div class="right-controls">
+      <div class="sort-group">
+        <button class="sort-btn" onclick="sortGallery('newest', this)" id="btnSortNew">⬇️ New - Old</button>
+        <button class="sort-btn" onclick="sortGallery('oldest', this)" id="btnSortOld">⬆️ Old - New</button>
+      </div>
+      <span class="hint-text" id="statusText">☕ Click on artwork to zoom in</span>
+    </div>
   </div>
 
   <section id="inspector" class="inspector">
@@ -297,6 +322,8 @@
   const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
   let currentLang = 'en';
   let allArtworks = [];
+  let currentCategory = 'all';
+  let currentSort = 'custom';
   let currentRandomItem = null;
   let randomTimer = null;
   let currentInspTimelapse = "";
@@ -306,6 +333,7 @@
     en: {
       subRole: "Character Illustrator • Adoptable &amp; OC Designer",
       vgenBtn: "✨ Commission on VGen ↗", allWorks: "All Works", illust: "Illustration", adopt: "Adoptable",
+      sortNew: "⬇️ New - Old", sortOld: "⬆️ Old - New",
       hint: "☕ Click on artwork to zoom in", close: "✕ Close", theme: "🌙 Toggle Canvas Background",
       boxHead: "Like this art style?", boxDesc: "Check pricing, queue slots, and commission securely via DASShu's VGen.",
       boxBtn: "✨ View Pricing &amp; Order on VGen ↗", loading: "⏳ Loading gallery...", empty: "☕ No artworks found",
@@ -314,6 +342,7 @@
     th: {
       subRole: "นักวาดภาพคาแรกเตอร์ • นักออกแบบตัวละครและ Adoptable",
       vgenBtn: "✨ สั่งงานคอมมิชชันบน VGen ↗", allWorks: "ผลงานทั้งหมด", illust: "ภาพประกอบ (Illustration)", adopt: "ตัวละครพร้อมขาย (Adoptable)",
+      sortNew: "⬇️ ใหม่ไปเก่า", sortOld: "⬆️ เก่าไปใหม่",
       hint: "☕ คลิกที่กรอบรูปเพื่อดูภาพขยาย", close: "✕ ปิดหน้าต่างขยาย", theme: "🌙 สลับพื้นหลังกรอบรูป (มืด/สว่าง)",
       boxHead: "ชอบมู้ดและลายเส้นแบบนี้ใช่ไหม?", boxDesc: "ดูเรตราคา เช็กคิวว่าง และกดส่งบรีฟผ่าน VGen ของ DASShu ได้โดยตรง",
       boxBtn: "✨ ดูเรตราคา &amp; สั่งงานบน VGen ↗", loading: "⏳ กำลังโหลดแกลเลอรี...", empty: "☕ ยังไม่มีรูปในระบบ",
@@ -338,6 +367,8 @@
     document.getElementById('btnAll').innerText = t.allWorks;
     document.getElementById('btnIllust').innerText = t.illust;
     document.getElementById('btnAdopt').innerText = t.adopt;
+    document.getElementById('btnSortNew').innerText = t.sortNew;
+    document.getElementById('btnSortOld').innerText = t.sortOld;
     document.getElementById('statusText').innerText = t.hint;
     document.getElementById('btnClose').innerText = t.close;
     document.getElementById('btnTheme').innerText = t.theme;
@@ -348,8 +379,31 @@
 
   function loadGallery() {
     document.getElementById('statusText').innerText = translations[currentLang].loading;
+
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('owner') === '1') {
+        localStorage.setItem('dasshu_is_owner', '1');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else if (params.get('owner') === '0') {
+        localStorage.removeItem('dasshu_is_owner');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    } catch (e) {}
+
+    let skipCount = "0";
+    try {
+      const isOwner = localStorage.getItem('dasshu_is_owner') === '1';
+      const visitedInSession = sessionStorage.getItem('dasshu_visited_session') === '1';
+      if (isOwner || visitedInSession) {
+        skipCount = "1";
+      } else {
+        sessionStorage.setItem('dasshu_visited_session', '1');
+      }
+    } catch (e) {}
+
     const script = document.createElement('script');
-    script.src = SCRIPT_API_URL + "?action=getArtworks&callback=onPortfolioLoaded&t=" + Date.now();
+    script.src = SCRIPT_API_URL + "?action=getArtworks&skipCount=" + skipCount + "&callback=onPortfolioLoaded&t=" + Date.now();
     document.body.appendChild(script);
   }
 
@@ -357,7 +411,7 @@
     if (res.avatarUrl) document.getElementById('profileAvatar').src = res.avatarUrl;
     if (res.artworks && res.artworks.length > 0) {
       allArtworks = res.artworks;
-      renderCards(allArtworks);
+      applyFilterAndSort();
       pickRandomArtwork();
       startAutoRandom();
       document.getElementById('statusText').innerText = translations[currentLang].hint;
@@ -365,6 +419,47 @@
       document.getElementById('statusText').innerText = translations[currentLang].empty;
     }
   };
+
+  function getSortScore(item) {
+    if (item.timestamp && !isNaN(item.timestamp)) return Number(item.timestamp);
+    return item.dataIndex !== undefined ? Number(item.dataIndex) : 0;
+  }
+
+  function applyFilterAndSort() {
+    let list = allArtworks.filter(item => currentCategory === 'all' || item.category === currentCategory);
+
+    if (currentSort === 'newest') {
+      list.sort((a, b) => getSortScore(b) - getSortScore(a));
+    } else if (currentSort === 'oldest') {
+      list.sort((a, b) => getSortScore(a) - getSortScore(b));
+    } else {
+      list.sort((a, b) => (a.dataIndex || 0) - (b.dataIndex || 0));
+    }
+
+    renderCards(list);
+  }
+
+  function filterGallery(cat, btn) {
+    closeInspector();
+    currentCategory = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilterAndSort();
+  }
+
+  function sortGallery(sortType, btn) {
+    closeInspector();
+    // หากกดปุ่มเดิมซ้ำ จะยกเลิกตัวกรองเวลาและกลับไปเรียงตามที่จัดไว้ในหน้าแอดมิน
+    if (currentSort === sortType) {
+      currentSort = 'custom';
+      btn.classList.remove('active');
+    } else {
+      currentSort = sortType;
+      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    applyFilterAndSort();
+  }
 
   function startAutoRandom() {
     if (randomTimer) clearInterval(randomTimer);
@@ -482,15 +577,6 @@
       imgEl.style.display = 'block';
       btn.innerText = translations[currentLang].watchTl;
     }
-  }
-
-  function filterGallery(cat, btn) {
-    closeInspector();
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.art-card').forEach(c => {
-      c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
-    });
   }
 
   function toggleCanvasTheme() { document.getElementById('viewerStage').classList.toggle('dark-mode'); }
