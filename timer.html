@@ -36,8 +36,10 @@
   .status-pill.ended {
     background: #FDECEB; color: #D9381E; border-color: #F7D4CF;
   }
+  .status-pill.cancelled {
+    background: var(--bg-oat); color: var(--text-sub); border-color: var(--border-soft);
+  }
 
-  /* ตัวเลขจับเวลาขนาดใหญ่ ชั่วโมง : นาที : วินาที */
   .countdown-grid {
     display: flex; align-items: flex-end; justify-content: center;
     gap: 12px; margin-bottom: 28px; flex-wrap: wrap;
@@ -60,13 +62,11 @@
     padding-bottom: 18px; user-select: none;
   }
 
-  /* ชื่อ Adoptable */
   .adopt-title {
     font-size: 2rem; font-weight: 800; color: var(--text-main);
     margin-bottom: 22px; line-height: 1.25;
   }
 
-  /* แถวแสดง เวลาเริ่ม / ระยะเวลา / เวลาจบ */
   .schedule-bar {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
     background: var(--bg-milk); border: 1px solid var(--border-soft);
@@ -87,22 +87,16 @@
   }
 
   .tz-note {
-    font-size: 0.8rem; color: var(--text-sub); margin-bottom: 26px;
+    font-size: 0.8rem; color: var(--text-sub); margin-bottom: 22px;
   }
 
   .action-row {
-    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
-    padding-top: 20px; border-top: 1px solid var(--border-soft);
+    display: flex; justify-content: center; padding-top: 18px;
+    border-top: 1px solid var(--border-soft);
   }
-  .btn-copy {
-    background: var(--text-main); color: #FFFFFF; border: none;
-    padding: 11px 22px; border-radius: 999px; font-size: 0.86rem;
-    font-weight: 700; cursor: pointer; transition: 0.2s;
-  }
-  .btn-copy:hover { transform: translateY(-2px); opacity: 0.92; }
   .btn-portfolio {
     background: var(--bg-oat); color: var(--text-main);
-    border: 1px solid var(--border-soft); padding: 11px 22px;
+    border: 1px solid var(--border-soft); padding: 10px 22px;
     border-radius: 999px; font-size: 0.86rem; font-weight: 700;
     text-decoration: none; transition: 0.2s;
   }
@@ -121,9 +115,8 @@
 <body>
 
   <main class="timer-card">
-    <div id="statusBadge" class="status-pill">🟢 AUCTION IN PROGRESS</div>
+    <div id="statusBadge" class="status-pill cancelled">⏳ LOADING TIMER...</div>
 
-    <!-- ชั่วโมง : นาที : วินาที ตัวเลขใหญ่ๆ -->
     <div class="countdown-grid">
       <div class="time-unit">
         <span class="unit-label">Hours / ชั่วโมง</span>
@@ -141,10 +134,8 @@
       </div>
     </div>
 
-    <!-- ชื่ออดอป -->
     <h1 class="adopt-title" id="adoptTitle">Adoptable Auction</h1>
 
-    <!-- เวลาเริ่ม / ระยะเวลาประมูล / เวลาจบ -->
     <div class="schedule-bar">
       <div class="sched-item">
         <span class="sched-label">🟢 Start / เวลาเริ่ม</span>
@@ -163,9 +154,6 @@
     <p class="tz-note" id="tzText">🌍 Times are automatically shown in your local timezone.</p>
 
     <div class="action-row">
-      <button type="button" class="btn-copy" id="copyBtn" onclick="copyTimeInfo()">
-        📋 Copy Time &amp; Link (ก๊อปปี้เวลาไปโพสต์)
-      </button>
       <a class="btn-portfolio" href="https://dasshuarts.github.io" target="_blank" rel="noopener">
         🎨 DASShu Portfolio ↗
       </a>
@@ -173,34 +161,77 @@
   </main>
 
 <script>
+  const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxIbTJaE0XeRP9ZGgALqEjSlh_TcvNPSJ5weJfz5-_P0AkUF6V1bq3rNiDRm8NAmRTM/exec";
   const params = new URLSearchParams(window.location.search);
-  const title = params.get('title') || 'Adoptable Character';
-  const startMs = Number(params.get('start') || 0);
-  const endMs = Number(params.get('end') || 0);
-  const durHours = params.get('dur') || '-';
+  const artId = params.get('id') || '';
+  const rowNum = params.get('row') || '';
 
-  document.getElementById('adoptTitle').innerText = title;
-  document.getElementById('durVal').innerText = durHours !== '-' ? (durHours + ' Hours (' + durHours + ' ชม.)') : '-';
+  let isAuctionActive = false;
+  let startMs = 0;
+  let endMs = 0;
+  let durHours = '-';
 
-  // ดึงโซนเวลาของเครื่องคนที่เปิดดูอัตโนมัติ
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local Time';
   document.getElementById('tzText').innerText =
     "🌍 Displayed in your local timezone (" + userTimeZone + ") • แสดงเวลาตามโซนเครื่องของคุณอัตโนมัติ";
 
   function formatLocalTime(ms) {
     if (!ms) return "-";
-    const d = new Date(ms);
-    return d.toLocaleString(undefined, {
-      year: 'numeric', month: 'short', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
+    const d = new Date(Number(ms));
+    return d.toLocaleString('en-GB', {
+      day: '2-digit', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+    }).replace(',', '');
   }
 
-  document.getElementById('startVal').innerText = formatLocalTime(startMs);
-  document.getElementById('endVal').innerText = formatLocalTime(endMs);
+  // ซิงค์สถานะกับหลังบ้านแบบเรียลไทม์ทุกๆ 5 วินาที
+  function syncTimerWithServer() {
+    if (!artId && !rowNum) return;
+    const oldScript = document.getElementById('timerSyncScript');
+    if (oldScript) oldScript.remove();
+
+    const script = document.createElement('script');
+    script.id = 'timerSyncScript';
+    script.src = SCRIPT_API_URL +
+      "?action=getTimer&id=" + encodeURIComponent(artId) +
+      "&row=" + encodeURIComponent(rowNum) +
+      "&callback=onTimerSynced&t=" + Date.now();
+    document.body.appendChild(script);
+  }
+
+  window.onTimerSynced = function(res) {
+    const badge = document.getElementById('statusBadge');
+    if (!res || !res.exists || !res.active || !res.timerData) {
+      // เมื่อแอดมินกดหยุดเวลาหรือยกเลิกจากหลังบ้าน
+      isAuctionActive = false;
+      startMs = 0;
+      endMs = 0;
+      if (res && res.title) document.getElementById('adoptTitle').innerText = res.title;
+      document.getElementById('hrVal').innerText = "00";
+      document.getElementById('minVal').innerText = "00";
+      document.getElementById('secVal').innerText = "00";
+      document.getElementById('startVal').innerText = "-";
+      document.getElementById('durVal').innerText = "-";
+      document.getElementById('endVal').innerText = "-";
+      badge.className = "status-pill cancelled";
+      badge.innerText = "⚪ AUCTION CLOSED / หยุดหรือปิดการประมูลแล้ว";
+      return;
+    }
+
+    isAuctionActive = true;
+    startMs = Number(res.timerData.start || 0);
+    endMs = Number(res.timerData.end || 0);
+    durHours = res.timerData.durationHours || '-';
+
+    document.getElementById('adoptTitle').innerText = res.title || 'Adoptable Character';
+    document.getElementById('startVal').innerText = formatLocalTime(startMs);
+    document.getElementById('durVal').innerText = durHours + ' Hours (' + durHours + ' ชม.)';
+    document.getElementById('endVal').innerText = formatLocalTime(endMs);
+    updateTick();
+  };
 
   function updateTick() {
-    if (!endMs) return;
+    if (!isAuctionActive || !endMs) return;
     const diff = endMs - Date.now();
     const badge = document.getElementById('statusBadge');
 
@@ -213,6 +244,9 @@
       return;
     }
 
+    badge.className = "status-pill";
+    badge.innerText = "🟢 AUCTION IN PROGRESS";
+
     const totalSec = Math.floor(diff / 1000);
     const hrs = Math.floor(totalSec / 3600);
     const mins = Math.floor((totalSec % 3600) / 60);
@@ -223,24 +257,8 @@
     document.getElementById('secVal').innerText = String(secs).padStart(2, '0');
   }
 
-  function copyTimeInfo() {
-    if (!endMs) return;
-    const discordEnd = Math.floor(endMs / 1000);
-    const text =
-      "⏳ Adoptable Auction: " + title + " (" + durHours + " Hours)\n" +
-      "🟢 Start: " + formatLocalTime(startMs) + "\n" +
-      "🔴 End: " + formatLocalTime(endMs) + " (" + userTimeZone + ")\n" +
-      "💬 Discord Timestamp: <t:" + discordEnd + ":F> (<t:" + discordEnd + ":R>)\n" +
-      "🔗 Live Countdown: " + window.location.href;
-
-    navigator.clipboard.writeText(text);
-    const btn = document.getElementById('copyBtn');
-    const old = btn.innerText;
-    btn.innerText = "✓ Copied! (คัดลอกเรียบร้อย)";
-    setTimeout(() => { btn.innerText = old; }, 2000);
-  }
-
-  updateTick();
+  syncTimerWithServer();
+  setInterval(syncTimerWithServer, 5000);
   setInterval(updateTick, 1000);
 </script>
 </body>
