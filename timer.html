@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noai, noimageai">
 <title>Adoptable Auction Timer — DASShu</title>
 <style>
   :root {
@@ -12,6 +13,7 @@
     --text-main: #2C2825; --text-sub: #857D75; --border-soft: #E8E1D9;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
   body {
     background: var(--bg-milk); color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
@@ -21,7 +23,7 @@
 
   .timer-card {
     background: var(--bg-card); border: 1px solid var(--border-soft);
-    border-radius: 24px; padding: 44px 36px; max-width: 780px; width: 100%;
+    border-radius: 24px; padding: 40px 36px; max-width: 780px; width: 100%;
     text-align: center; box-shadow: 0 10px 36px rgba(156, 126, 99, 0.08);
     position: relative;
   }
@@ -31,7 +33,7 @@
     background: var(--sage-bg); color: var(--sage-green);
     border: 1px solid #D2E5D8; padding: 5px 16px; border-radius: 999px;
     font-size: 0.82rem; font-weight: 800; letter-spacing: 0.03em;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
   .status-pill.ended {
     background: #FDECEB; color: #D9381E; border-color: #F7D4CF;
@@ -42,29 +44,40 @@
 
   .countdown-grid {
     display: flex; align-items: flex-end; justify-content: center;
-    gap: 12px; margin-bottom: 28px; flex-wrap: wrap;
+    gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
   }
   .time-unit {
     display: flex; flex-direction: column; align-items: center;
     background: var(--bg-milk); border: 1.5px solid var(--border-soft);
-    border-radius: 18px; padding: 18px 24px; min-width: 145px;
+    border-radius: 18px; padding: 16px 24px; min-width: 145px;
   }
   .unit-label {
     font-size: 0.78rem; font-weight: 700; color: var(--text-sub);
     text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
   }
   .unit-digits {
-    font-size: 4.2rem; font-weight: 900; line-height: 1;
+    font-size: 4.1rem; font-weight: 900; line-height: 1;
     font-variant-numeric: tabular-nums; color: var(--text-main);
   }
   .colon {
-    font-size: 3.4rem; font-weight: 900; color: var(--wood-main);
-    padding-bottom: 18px; user-select: none;
+    font-size: 3.3rem; font-weight: 900; color: var(--wood-main);
+    padding-bottom: 16px; user-select: none;
   }
 
   .adopt-title {
-    font-size: 2rem; font-weight: 800; color: var(--text-main);
-    margin-bottom: 22px; line-height: 1.25;
+    font-size: 1.9rem; font-weight: 800; color: var(--text-main);
+    margin-bottom: 14px; line-height: 1.25;
+  }
+
+  /* กรอบรูปผลงานขนาดกะทัดรัดใต้ชื่อ Adoptable */
+  .adopt-img-wrap {
+    display: none; margin: 0 auto 22px;
+  }
+  .adopt-img {
+    max-width: 210px; max-height: 210px; width: auto; height: auto;
+    object-fit: contain; border-radius: 14px;
+    border: 2px solid var(--border-soft); background: var(--bg-oat);
+    box-shadow: 0 6px 18px rgba(156, 126, 99, 0.12);
   }
 
   .schedule-bar {
@@ -83,11 +96,11 @@
     text-transform: uppercase;
   }
   .sched-val {
-    font-size: 0.95rem; font-weight: 800; color: var(--text-main);
+    font-size: 0.94rem; font-weight: 800; color: var(--text-main);
   }
 
   .tz-note {
-    font-size: 0.8rem; color: var(--text-sub); margin-bottom: 22px;
+    font-size: 0.8rem; color: var(--text-sub); margin-bottom: 20px;
   }
 
   .action-row {
@@ -103,7 +116,7 @@
   .btn-portfolio:hover { background: #EFE9E1; border-color: var(--wood-main); }
 
   @media (max-width: 640px) {
-    .timer-card { padding: 30px 18px; }
+    .timer-card { padding: 28px 18px; }
     .time-unit { min-width: 92px; padding: 14px 12px; }
     .unit-digits { font-size: 2.5rem; }
     .colon { font-size: 2rem; padding-bottom: 12px; }
@@ -134,7 +147,13 @@
       </div>
     </div>
 
+    <!-- ชื่อ Adoptable -->
     <h1 class="adopt-title" id="adoptTitle">Adoptable Auction</h1>
+
+    <!-- รูปภาพขนาดพอดีใต้ชื่อ Adoptable -->
+    <div class="adopt-img-wrap" id="adoptImgWrap">
+      <img id="adoptImg" class="adopt-img" src="" alt="Adoptable Preview">
+    </div>
 
     <div class="schedule-bar">
       <div class="sched-item">
@@ -169,7 +188,6 @@
   let isAuctionActive = false;
   let startMs = 0;
   let endMs = 0;
-  let durHours = '-';
 
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local Time';
   document.getElementById('tzText').innerText =
@@ -184,7 +202,25 @@
     }).replace(',', '');
   }
 
-  // ซิงค์สถานะกับหลังบ้านแบบเรียลไทม์ทุกๆ 5 วินาที
+  function formatDurationText(timerData) {
+    if (!timerData) return "-";
+    const h = Number(timerData.hours !== undefined ? timerData.hours : (timerData.durationHours || 0));
+    const m = Number(timerData.minutes || 0);
+    const ext = Number(timerData.extendedMins || 0);
+
+    let enParts = [];
+    let thParts = [];
+    if (h > 0) { enParts.push(h + "h"); thParts.push(h + " ชม."); }
+    if (m > 0) { enParts.push(m + "m"); thParts.push(m + " นาที"); }
+    if (enParts.length === 0) { enParts.push("0m"); thParts.push("0 นาที"); }
+
+    let text = enParts.join(" ") + " (" + thParts.join(" ") + ")";
+    if (ext > 0) {
+      text += " • +" + ext + "m Snipe Guard";
+    }
+    return text;
+  }
+
   function syncTimerWithServer() {
     if (!artId && !rowNum) return;
     const oldScript = document.getElementById('timerSyncScript');
@@ -201,8 +237,15 @@
 
   window.onTimerSynced = function(res) {
     const badge = document.getElementById('statusBadge');
+    const imgWrap = document.getElementById('adoptImgWrap');
+    const imgEl = document.getElementById('adoptImg');
+
+    if (res && res.finalUrl) {
+      if (imgEl.src !== res.finalUrl) imgEl.src = res.finalUrl;
+      imgWrap.style.display = 'block';
+    }
+
     if (!res || !res.exists || !res.active || !res.timerData) {
-      // เมื่อแอดมินกดหยุดเวลาหรือยกเลิกจากหลังบ้าน
       isAuctionActive = false;
       startMs = 0;
       endMs = 0;
@@ -221,11 +264,10 @@
     isAuctionActive = true;
     startMs = Number(res.timerData.start || 0);
     endMs = Number(res.timerData.end || 0);
-    durHours = res.timerData.durationHours || '-';
 
     document.getElementById('adoptTitle').innerText = res.title || 'Adoptable Character';
     document.getElementById('startVal').innerText = formatLocalTime(startMs);
-    document.getElementById('durVal').innerText = durHours + ' Hours (' + durHours + ' ชม.)';
+    document.getElementById('durVal').innerText = formatDurationText(res.timerData);
     document.getElementById('endVal').innerText = formatLocalTime(endMs);
     updateTick();
   };
@@ -257,6 +299,7 @@
     document.getElementById('secVal').innerText = String(secs).padStart(2, '0');
   }
 
+  document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
   syncTimerWithServer();
   setInterval(syncTimerWithServer, 5000);
   setInterval(updateTick, 1000);
